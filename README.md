@@ -15,4 +15,6 @@ cd ..
 #添加平台 android或ios 具体环境搭建google  
 cordova platform add android  
 #在手机预览 手机连接电脑usb 开启usb调试 连接电脑wifi  
+#开启服务器（npm run dev时会自动开启）
+node proxy.js
 cordova run android   
