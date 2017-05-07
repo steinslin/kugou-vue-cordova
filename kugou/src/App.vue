@@ -50,10 +50,8 @@ $color_light:rgb(153, 182, 195);
 $color_primary:rgb(238, 242, 245);
 $playholder_color:rgb(80, 84, 96);
 $light_color_2:rgb(0, 209, 255);
-html {
-    font-size: 1vh;
-}
-
+$light_active_color:rgb(251,246,169);
+$nav_bg_color:rgb(33,48,81);
 ::-webkit-scrollbar {
     width: 0px;
 }
@@ -62,6 +60,19 @@ html {
     animation-duration: .5s;
 }
 
+.active-border{
+    color:$light_active_color;
+    height:2px;
+    background-color:$border_color; 
+}
+
+.active{
+    color:$light_active_color !important;
+}
+
+.swipe-con-nav{
+    background-color: $nav_bg_color
+}
 #app {
     font-family: 'microsoft yahei', 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -155,11 +166,13 @@ input {
     position: fixed;
 }
 
-.ripple-container {}
+.ripple-container {
+  
+}
 
 .ripple {
     background-color: rgba(255, 255, 255, 0.4);
-    animation: ripple 1s forwards cubic-bezier(0, 0, 0.2, 1);
+    animation: ripple .8s forwards cubic-bezier(0, 0, 0.2, 1);
 }
 
 input::-webkit-input-placeholder,

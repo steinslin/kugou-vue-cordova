@@ -27,7 +27,7 @@
 					<div class='author-name light_color text-no-wrap'>{{audio.author_name}}</div>
 					<v-touch class='controll-btn' >
 						<v-touch tag='img' v-if='playing' :src="controll_stop_icons.icons[controll_stop_icons.selected]" @touchstart='press("controll_stop_icons")' @touchend='pressup("controll_stop_icons")'  @tap='stop()' ></v-touch>
-						<v-touch tag='img' v-else :src="controll_play_icons.icons[controll_play_icons.selected]" @touchstart='press("controll_play_icons")' @touchend='pressup("controll_play_icons")'  @tap='play()' ></v-touch>
+						<v-touch tag='img' v-else :src="controll_play_icons.icons[controll_play_icons.selected]" @touchstart='press("controll_play_icons")' @touchend='pressup("controll_play_icons")'  @tap='play' ></v-touch>
 					</v-touch>
 					<v-touch class='next-btn' >
 						<img :src='next_icons.icons[next_icons.selected]' @touchstart='press("next_icons")' @touchend='pressup("next_icons")' />
@@ -156,14 +156,14 @@
 			},
 			stop(){
 				let audio=document.getElementById('audio');
-				if(!audio.paused && audio.src!=''){
+				if(audio.src!='' && audio.src!=undefined && audio.src!=null){
 					audio.pause();
 					this.$store.commit('stop');
 				}
 			},
 			play(){
 				let audio=document.getElementById('audio');
-				if(audio.paused && audio.src!=''){
+				if(audio.src!='' && audio.readyState==4){
 					audio.play();
 					this.$store.commit('play');
 				}

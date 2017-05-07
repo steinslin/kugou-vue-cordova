@@ -2,7 +2,7 @@
 	<div>
 		<div class='con con-head'>
 			<ul>
-				<v-touch tag='li' v-ripple v-for='(item,index) in top_action_icons' @touchstart='press("top_action_icons",index)' @touchend='pressup("top_action_icons",index)' @tap='go(index)'>
+				<v-touch tag='li' v-ripple v-for='(item,index) in top_action_icons' @press='press("top_action_icons",index)' @pressup='pressup("top_action_icons",index)' @tap='go(index)'>
 					<img class='icon' :src='item.icons[item.selected]' />
 					<div :style='{color:item.selected==1?"rgb(0,209,255)":"#fff"}'>{{item.text}}</div>
 				</v-touch>
@@ -19,7 +19,7 @@
 		</div>
 		<div class='con con-nav'>
 			<ul>
-				<v-touch tag='li' v-ripple v-for='(item,index) in center_nav_icons' @touchstart='press("center_nav_icons",index)' @touchend='pressup("center_nav_icons",index)' @tap='goNavCon(index)'>
+				<v-touch tag='li' v-ripple v-for='(item,index) in center_nav_icons' @press='press("center_nav_icons",index)' @pressup='pressup("center_nav_icons",index)' @tap='goNavCon(index)'>
 					<img class='icon center_nav_icon' :src='item.icons[item.selected]' />
 					<div :style='{color:item.selected==1?"rgb(0,209,255)":"#fff"}'>{{item.text}}</div>
 				</v-touch>

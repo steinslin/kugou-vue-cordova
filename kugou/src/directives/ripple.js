@@ -12,6 +12,18 @@ RippleEffect.prototype = {
 		if (rippler) {
 			rippler.remove();
 		}
+		let currentNode = event.target
+		let scrollTarget = window;
+		while (currentNode && currentNode.tagName !== 'HTML' &&
+			currentNode.tagName !== 'BODY' && currentNode.nodeType === 1) {
+			let overflowY = document.defaultView.getComputedStyle(currentNode).overflowY;
+			if (overflowY === 'scroll' || overflowY === 'auto') {
+				scrollTarget = currentNode;
+				currentNode = null;
+			} else {
+				currentNode = currentNode.parentNode;
+			}
+		}
 		var ripple = document.createElement('div');
 		ripple.style.position = 'absolute';
 		ripple.style.width = circleD + 'px';

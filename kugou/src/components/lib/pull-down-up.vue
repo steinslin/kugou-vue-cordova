@@ -188,12 +188,9 @@ export default {
             }
         },
         checkBottomReached() {
-            console.log(this.scrollEventTarget);
             if (this.scrollEventTarget === window) {
                 return document.body.scrollTop + document.documentElement.clientHeight >= document.body.scrollHeight;
             } else {
-                console.log(this.$el.getBoundingClientRect());               
-                console.log(this.scrollEventTarget.getBoundingClientRect())
                 return this.$el.getBoundingClientRect().bottom <= this.scrollEventTarget.getBoundingClientRect().bottom + 5;
             }
         },

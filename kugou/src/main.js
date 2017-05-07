@@ -18,6 +18,9 @@ Vue.use(VueTouch, {
 	name: 'v-touch'
 })
 
+VueTouch.config.press = {
+	time: 5
+}
 Vue.directive('ripple', ripple)
 
 Vue.directive('ripple-btn', rippleBtn)
