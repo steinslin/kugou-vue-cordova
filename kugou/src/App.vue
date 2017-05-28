@@ -3,11 +3,13 @@
         <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
             <router-view></router-view>
         </transition>
+        <play-list ref='playList'></play-list>
         <footer-play-bar></footer-play-bar>
     </div>
 </template>
 <script>
-import footerPlayBar from './components/footer.vue';
+import footerPlayBar from './components/footer';
+import playList from './components/play-list'
 import {
     bg
 } from './config/skin-config.js'
@@ -15,6 +17,9 @@ import {
     let docEl = doc.documentElement;
     let clientHeight = docEl.clientHeight;
     docEl.style.fontSize = clientHeight / 100 * 4 + 'px';
+    // let style=doc.createElement('style');
+    // style.innerHTML='.bg{height:'+clientHeight+'px}'
+    // doc.head.appendChild(style);
 })(document, window)
 export default {
     name: 'app',
@@ -26,7 +31,8 @@ export default {
         }
     },
     components: {
-        footerPlayBar
+        footerPlayBar,
+        playList
     },
     watch: {
         '$route' (to, from) {
@@ -45,17 +51,73 @@ export default {
 }
 </script>
 <style lang='scss'>
-$border_color:#186591;
-$color_light:rgb(153, 182, 195);
-$color_primary:rgb(238, 242, 245);
-$playholder_color:rgb(80, 84, 96);
-$light_color_2:rgb(0, 209, 255);
-$light_active_color:rgb(251,246,169);
-$nav_bg_color:rgb(33,48,81);
-::-webkit-scrollbar {
-    width: 0px;
-}
+@import './styles/lv/index.scss';
 
+$border_color       : #195275;
+$img_width          : 50px;
+$color_light        : #99B6C3;
+$color_primary      : #EEF2F5;
+$playholder_color   : #505460;
+$light_color_2      : #00D1FF;
+$light_active_color : #FBF6A9;
+$nav_bg_color       : #213051;
+
+/*::-webkit-scrollbar {
+     width: 2px;
+}
+*/
+.header-con{
+    display: flex;
+    box-sizing: border-box;
+    margin-top: 0.25rem;
+    padding:0.25rem 3vw;
+    height: 1.5rem;
+    *{
+        line-height: 1.15rem;
+        height: 1.15rem;
+    }
+    .iconfont{
+        font-size: 5vw;
+    }
+    .icon-left{
+        margin-right: 4vw;
+        position: relative;
+    }
+} 
+
+.mint-toast{
+    font-weight: 200;
+}
+.mint-msgbox-header{
+    display: none;
+}
+body .mint-msgbox-message{
+    color:$color_primary;
+    line-height: 2.2rem
+}
+body .mint-msgbox{
+    font-size: 4vw;
+}
+.mint-msgbox-btns button{
+    font-size: 4.5vw;
+    background-color: transparent;
+}
+body button.mint-msgbox-cancel{
+    border-right: 1px solid $border-color;
+    color:$color_primary;
+    &:active{
+        background-color:transparent;
+        color:color_primary;
+    }
+}
+body button.mint-msgbox-confirm{
+    &:active{
+        background-color:transparent;
+    }
+}
+body .mint-msgbox-content{
+    border-bottom: 1px solid $border-color;
+}
 .animated.animated-in {
     animation-duration: .5s;
 }
@@ -85,14 +147,9 @@ $nav_bg_color:rgb(33,48,81);
     }
     width:100vw;
     /* overflow:hidden; 这个加上在切换路由时动画有bug  */
-    color:$color_primary;
     @for $i from 1 through 6 {
         .z#{$i} { z-index:$i; }
     }
-}
-
-body {
-    overflow-x: hidden;
 }
 
 .text-no-wrap {
@@ -314,7 +371,7 @@ textarea:-ms-input-placeholder {
 }
 
 .thirdSildeIn{
-    -webkit-animation-name: thirdSildeIn;
+    -webkit-animation-name: AutoFileName;
     animation-name: thirdSildeIn;
 }
 </style>

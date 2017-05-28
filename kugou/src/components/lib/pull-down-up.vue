@@ -2,14 +2,30 @@
     <div class='_con'>
         <div class="pull-con" @touchstart='startHandler($event)' @touchmove='moveHandler($event)' @touchend='endHandler($event)' :style='{"transform":"translate3d(0, "+offsetTop+"px,0)"}' :class='{"is-dropped":topDropped || bottomDropped}'>
             <div class="top" v-if='refresh'>
-            	<img src='./gears.svg' class='loadingImg' v-if='onTopLoading' />
-            	<span class='icon with-animate light_color_2' v-if='!onTopLoading' :style='{"transform":"rotate("+rotateDeg+"deg)"}'>↓</span>
+                <!-- <img src='./gears.svg' class='loadingImg' v-if='onTopLoading' /> -->
+                <div class="ant-spin ant-spin-spinning" v-if='onTopLoading'>
+                    <span class="ant-spin-dot">
+                        <i></i>
+                        <i></i>
+                        <i></i>
+                        <i></i>
+                    </span>
+                </div>
+                <span class='icon with-animate light_color_2' v-if='!onTopLoading' :style='{"transform":"rotate("+rotateDeg+"deg)"}'>↓</span>
                 <span class='center-text light_color_2'>{{pullDownText}}</span>
             </div>
             <slot name='data'></slot>
             <div class='bottom' v-if='loadmore'>
-            	<span class='icon with-animate light_color_2' v-if='!onBottomLoading' :style='{"transform":"rotate("+rotateDeg+"deg)"}'>↑</span>
-            	<img src='./gears.svg' class='loadingImg' v-if='onBottomLoading' />
+                <span class='icon with-animate light_color_2' v-if='!onBottomLoading' :style='{"transform":"rotate("+rotateDeg+"deg)"}'>↑</span>
+                <!-- <img src='./gears.svg' class='loadingImg' v-if='onBottomLoading' /> -->
+                <div class="ant-spin ant-spin-spinning" v-if='onBottomLoading'>
+                    <span class="ant-spin-dot">
+                        <i></i>
+                        <i></i>
+                        <i></i>
+                        <i></i>
+                    </span>
+                </div>
                 <span class='center-text light_color_2'>{{pullUpText}}</span>
             </div>
         </div>
@@ -38,27 +54,128 @@
     .bottom {
         margin-bottom: -40px;
     }
-    .loadingImg{
-    	vertical-align: middle;
-    	height:40px;
-    	display: inline-block;
-    	margin-right: 3vw;
-    	transform: scale(0.65);
+    .loadingImg {
+        vertical-align: middle;
+        height: 40px;
+        display: inline-block;
+        margin-right: 3vw;
+        transform: scale(0.65);
     }
-    .icon{
-    	vertical-align: middle;
-		margin-right: 3vw;
-		display: inline-block;
+    .icon {
+        vertical-align: middle;
+        margin-right: 3vw;
+        display: inline-block;
     }
-    .center-text{
-    	display: inline-block;
-    	line-height: 40px;
-    	height: 40px;
+
+}
+
+.is-dropped,
+.with-animate {
+    transition: transform 0.3s ease;
+}
+
+.ant-spin {
+    margin-right: 2vw;
+    color: #108ee9;
+    vertical-align: middle;
+    text-align: center;
+    opacity: 0;
+    position: absolute;
+    -webkit-transition: -webkit-transform .3s cubic-bezier(.78, .14, .15, .86);
+    transition: -webkit-transform .3s cubic-bezier(.78, .14, .15, .86);
+    transition: transform .3s cubic-bezier(.78, .14, .15, .86);
+    transition: transform .3s cubic-bezier(.78, .14, .15, .86), -webkit-transform .3s cubic-bezier(.78, .14, .15, .86);
+    font-size: 12px;
+    display: none;
+}
+
+.ant-spin-spinning {
+    opacity: 1;
+    position: static;
+    display: inline-block;
+}
+
+.ant-spin-dot {
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 20px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-animation: antRotate 1.2s infinite linear;
+    animation: antRotate 1.2s infinite linear;
+}
+
+.ant-spin-dot i {
+    width: 9px;
+    height: 9px;
+    border-radius: 100%;
+    /*background-color: #108ee9;*/
+    background-color: rgb(110,200,255);
+    -webkit-transform: scale(.75);
+    -ms-transform: scale(.75);
+    transform: scale(.75);
+    display: block;
+    position: absolute;
+    opacity: .3;
+    -webkit-animation: antSpinMove 1s infinite linear alternate;
+    animation: antSpinMove 1s infinite linear alternate;
+    -webkit-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+}
+
+.ant-spin-dot i:first-child {
+    left: 0;
+    top: 0;
+}
+
+.ant-spin-dot i:nth-child(2) {
+    right: 0;
+    top: 0;
+    -webkit-animation-delay: .4s;
+    animation-delay: .4s;
+}
+
+.ant-spin-dot i:nth-child(3) {
+    right: 0;
+    bottom: 0;
+    -webkit-animation-delay: .8s;
+    animation-delay: .8s;
+}
+
+.ant-spin-dot i:nth-child(4) {
+    left: 0;
+    bottom: 0;
+    -webkit-animation-delay: 1.2s;
+    animation-delay: 1.2s;
+}
+
+@keyframes antRotate {
+    100% {
+        -webkit-transform: rotate(405deg);
+        transform: rotate(405deg);
     }
 }
 
-.is-dropped,.with-animate {
-    transition: transform 0.3s ease;
+@-webkit-keyframes antRotate {
+    100% {
+        -webkit-transform: rotate(405deg);
+        transform: rotate(405deg);
+    }
+}
+
+@keyframes antSpinMove {
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes antSpinMove {
+    100% {
+        opacity: 1;
+    }
 }
 </style>
 <script tyle='es6'>
@@ -70,7 +187,7 @@ const texts = {
     onBottomLoadingText: '加载中...'
 }
 export default {
-	name:'lv-loadmore',
+    name: 'lv-loadmore',
     props: {
         onPullDownText: {
             type: String,
@@ -140,33 +257,33 @@ export default {
                 return this.onBottomLoadingText
             }
         },
-        rotateDeg(){
-        	let {
+        rotateDeg() {
+            let {
                 offsetTop,
                 onTopLoading
             } = this;
-            if (offsetTop>=0 &&offsetTop <= 50 || offsetTop>=-50 && offsetTop<=0) {
+            if (offsetTop >= 0 && offsetTop <= 50 || offsetTop >= -50 && offsetTop <= 0) {
                 return 0
-            } else{
-            	return 180;
+            } else {
+                return 180;
             }
         }
     },
     methods: {
-    	topLoaded(){
-			this.offsetTop=0;
-			this.onTopLoading=false;
-			setTimeout(()=>{
-				this.topDropped=false			
-			},400)
-    	},
-    	bottomLoaded(){
-			this.offsetTop=0;
-			this.onBottomLoading=false;
-			setTimeout(()=>{
-				this.bottomDropped=false			
-			},400)
-    	},	
+        topLoaded() {
+            this.offsetTop = 0;
+            this.onTopLoading = false;
+            setTimeout(() => {
+                this.topDropped = false
+            }, 400)
+        },
+        bottomLoaded() {
+            this.offsetTop = 0;
+            this.onBottomLoading = false;
+            setTimeout(() => {
+                this.bottomDropped = false
+            }, 400)
+        },
         getScrollEventTarget(element) {
             let currentNode = element;
             while (currentNode && currentNode.tagName !== 'HTML' &&
@@ -201,6 +318,9 @@ export default {
             this.bottomReached = false;
         },
         moveHandler(e) {
+            if (this.$parent.$parent.swiping) {
+                return;
+            }
             if (this.startY < this.$el.getBoundingClientRect().top && this.startY > this.$el.getBoundingClientRect().bottom) {
                 return;
             }
@@ -208,31 +328,31 @@ export default {
             if (this.direction === 'up') {
                 this.bottomReached = this.bottomReached || this.checkBottomReached();
             }
-            if (( this.direction === 'down' && this.getScrollTop(this.scrollEventTarget) === 0 ) || (this.direction === 'up' && this.bottomReached  && !this.bottomAllLoaded)) {
+            if ((this.direction === 'down' && this.getScrollTop(this.scrollEventTarget) === 0) || (this.direction === 'up' && this.bottomReached && !this.bottomAllLoaded)) {
                 e.preventDefault();
                 e.stopPropagation();
                 this.offsetTop = (e.touches[0].clientY - this.startY) * 0.5;
-            } 
+            }
         },
         endHandler(e) {
             if (this.direction === 'down' && this.getScrollTop(this.scrollEventTarget) === 0 && this.offsetTop > 0) {
                 this.topDropped = true;
                 if (this.offsetTop >= 50) {
-                    if(!this.onTopLoading){						
-                        if(typeof this.refresh==='function'){
+                    if (!this.onTopLoading) {
+                        if (typeof this.refresh === 'function') {
                             this.onTopLoading = true;
                             this.offsetTop = 50;
-                            setTimeout(()=>{
-                                this.refresh()
-                            },300)
-                        //    this.refresh()
-                        }else{
+                            setTimeout(() => {
+                                    this.refresh()
+                                }, 300)
+                                //    this.refresh()
+                        } else {
                             this.onTopLoading = false;
                             this.offsetTop = 0
                             setTimeout(() => {
                                 this.topDropped = false
                             }, 400)
-                        }					
+                        }
                     }
                 } else {
                     this.onTopLoading = false;
@@ -241,34 +361,34 @@ export default {
                         this.topDropped = false
                     }, 400)
                 }
-            } else if (this.direction === 'up' && this.bottomReached && this.offsetTop<0){
-            	this.bottomDropped = true;
-          		this.bottomReached = false;
-          		if(this.offsetTop<-50){
-          			
-          			if(!this.onBottomLoading){
-                        if(typeof this.loadmore==='function'){
-                            this.offsetTop=-50;
-                            this.onBottomLoading=true;
-                            setTimeout(()=>{
-                                this.loadmore()
-                            },300)
-                        //    this.loadmore();
-                        }else{
-                            this.onBottomLoading=false;
-                            this.offsetTop=0;
-                            setTimeout(()=>{
-                                this.bottomDropped=false
-                            },400)
-                        }						
-          			}
-          		}else{
-          			this.onBottomLoading=false;
-          			this.offsetTop=0;
-          			setTimeout(()=>{
-          				this.bottomDropped=false
-          			},400)
-          		}
+            } else if (this.direction === 'up' && this.bottomReached && this.offsetTop < 0) {
+                this.bottomDropped = true;
+                this.bottomReached = false;
+                if (this.offsetTop < -50) {
+
+                    if (!this.onBottomLoading) {
+                        if (typeof this.loadmore === 'function') {
+                            this.offsetTop = -50;
+                            this.onBottomLoading = true;
+                            setTimeout(() => {
+                                    this.loadmore()
+                                }, 300)
+                                //    this.loadmore();
+                        } else {
+                            this.onBottomLoading = false;
+                            this.offsetTop = 0;
+                            setTimeout(() => {
+                                this.bottomDropped = false
+                            }, 400)
+                        }
+                    }
+                } else {
+                    this.onBottomLoading = false;
+                    this.offsetTop = 0;
+                    setTimeout(() => {
+                        this.bottomDropped = false
+                    }, 400)
+                }
             }
         }
     },

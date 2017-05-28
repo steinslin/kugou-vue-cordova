@@ -11,6 +11,8 @@ import station from '@/components/station/station'
 import kuGroup from '@/components/ku-group/ku-group'
 import search from '@/components/search/search'
 import searchresult from '@/components/search/searchresult'
+import searchHistory from '@/components/search/history'
+
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +32,10 @@ export default new Router({
 			path: 'result',
 			name: 'searchresult',
 			component: searchresult
+		}, {
+			path: '',
+			name: 'searchHistory',
+			component: searchHistory,
 		}]
 	}, {
 		path: '/2/love',

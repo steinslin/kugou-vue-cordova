@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class='footer'>
 		<v-touch :style='{backgroundImage:`url(${play_bg})`,left:left}' class='con' @swiperight='openLeftLyric' @swipeleft='closeLeftLyric' >
 			<div class='con-left-lyric _relative'>
 				<div class='lyric' v-if='currentLyrics.length>0' :style='{left:lyric_left}'>{{currentLyrics[0].lyric}}
@@ -12,14 +12,14 @@
 			</div>
 			<div class='_relative con-right-audio'>
 				<div class='con-left'>
-					<div class='padding-circel'>
-						<img :src='audio.img || singer_default_play_bg' class='circel' :style='{transform:`rotate(${currentTime*8}deg)`}' />
+					<div class='padding-circel' :style='{transform:`rotate(${currentTime*8}deg)`}' :class='paning?"stop":""'>
+						<img :src='audio.img || singer_default_play_bg' class='circel'  />
 					</div>
 				</div>
 				<div class='audio con-right _relative'>
 					<v-touch class='progress-bar unfinish' id='unfinish'>
 						<div class='finish' :style='{width:rate_of_progress}'></div>
-						<v-touch @pan='setRateOfProgress($event,"unfinish",".slider-btn")' @panend='play' class='slider-btn-con'  :style='{left:rate_of_progress}'>
+						<v-touch @pan='setRateOfProgress($event,"unfinish",".slider-btn")' @panend='panend' class='slider-btn-con'  :style='{left:rate_of_progress}'>
 							<div class='slider-btn'></div>
 						</v-touch>			
 					</v-touch>
@@ -32,8 +32,8 @@
 					<v-touch class='next-btn' >
 						<img :src='next_icons.icons[next_icons.selected]' @touchstart='press("next_icons")' @touchend='pressup("next_icons")' />
 					</v-touch>
-					<v-touch class='song-list-btn' >
-						<img :src='song_list_icons.icons[song_list_icons.selected]' @touchstart='press("song_list_icons")' @touchend='pressup("song_list_icons")' />
+					<v-touch class='song-list-btn' @tap='togglePlayList'>
+						<img :src='song_list_icons.icons[song_list_icons.selected]' @touchstart='press("song_list_icons")' @touchend='pressup("song_list_icons")' @tap='showSongList()'/>
 					</v-touch>
 				</div>
 			</div>
@@ -49,7 +49,9 @@
 	export default {
 		data(){
 			return{
-				left:'-78vw'
+				left:'-78vw',
+				paning:false,
+				panendToPlay:false
 			}
 		},
 		computed:{
@@ -66,9 +68,12 @@
 				'song_list_icons',
 				'currentTime',
 				'rate_of_progress',
-				'playing'				
+				'playing',
+				'playList',
+				'playType',
+				'playTypes'
 			]),
-			...mapGetters(['lyricArray','currentLyrics']),
+			...mapGetters(['lyricArray','currentLyrics','audioIndex']),
 			lyricHighlightWidth(){
 				let {lyricArray,currentLyrics,currentTime}=this;
 				if(currentLyrics.length==0){
@@ -151,34 +156,45 @@
 				this.$store.commit('pressup',{key})
 			},
 			setRateOfProgress(event,id,btn){
-				this.$store.commit('setRateOfProgress',{event,id,btn})
-				this.showLyrics();	
+				if(document.getElementById('audio').src!=''){
+					this.$store.commit('setRateOfProgress',{event,id,btn})
+					this.panendToPlay=this.playing?true:false;			
+					this.showLyrics();
+					this.paning=true;
+				}				
 			},
 			stop(){
 				let audio=document.getElementById('audio');
+				this.$store.commit('stop');
 				if(audio.src!='' && audio.src!=undefined && audio.src!=null){
-					audio.pause();
-					this.$store.commit('stop');
+					audio.pause();				
 				}
 			},
 			play(){
 				let audio=document.getElementById('audio');
-				if(audio.src!='' && audio.readyState==4){
+				this.paning=false;
+				if(audio.src!=''){
 					audio.play();
 					this.$store.commit('play');
+				}
+			},
+			panend(){
+				let audio=document.getElementById('audio');
+				this.paning=false;
+				if(this.panendToPlay && audio.src!=''){
+					audio.play();
+					this.$store.commit('play');
+					this.panendToPlay=false;
 				}
 			},
 			timeupdate(){
 				this.$store.commit('timeupdate');
 			},
 			showLyrics(){
-				// let currentTime=parseInt(this.currentTime);
-				
-				// let {lyrics}=this.audio;
-				// console.log(lyrics);
+
 			},
-			getLyricWithTime(lyrics,time){
-				
+			togglePlayList(){
+				this.$parent.$refs.playList.showPlayList=!this.$parent.$refs.playList.showPlayList;
 			},
 			openLeftLyric(){
 				this.left=0;
@@ -204,6 +220,7 @@
 		padding:0px 5vw 0px 5vw;
 		box-sizing:border-box;
 		z-index: 9999;
+		overflow-y: visible;
 		.con-left-lyric{
 			width:72.5vw;
 			margin-right:2vw;
@@ -229,6 +246,10 @@
 			border:2px solid rgb(86,88,91);
 			border-radius:50%;
 			overflow:hidden;
+			transition: all 0.5s linear;
+			&.stop{
+				transition: all 0s linear;
+			}
 		}
 		.circel{
 			height:2.1925rem;
@@ -295,6 +316,7 @@
 				height:0.35rem;
 				background:$finish_color;
 				border-radius:100%;
+				overflow:hidden;
 				/*transform: translate(-0.4vh,-0.4vh);*/
 			}
 		}
@@ -302,31 +324,33 @@
 			font-size: 3.8vw;
 			margin-top:0.2rem;
 			width:44vw;
+			line-height: 1.2
 		}
 		.author-name{
 			font-size: 3vw;
 			width:44vw;	
+			line-height: 1.2
 		}
 		.controll-btn,.song-list-btn,.next-btn{
 			position:absolute;
 			bottom:0.625rem;
-			transform: translateY(0.15rem);
+			transform: translateY(0.45rem);
 			img{
-				width:5vw;
+				width:10vw;
 			}
 		}
 		.controll-btn{
-			right: 21.5vw;
-			transform: translateY(0.4rem);
+			right: 23vw;
+			/*transform: translateY(0.45rem);
 			img{
 				width:9vw;
-			}
+			}*/
 		}
 		.next-btn{
-			right:12vw;
+			right:11vw;
 		}
 		.song-list-btn{
-			right:0vw;
+			right:-1vw;
 		}
 	}
 	@keyframes rotate{
@@ -337,4 +361,12 @@
 			transform:rotate(360deg);
 		}
 	}
+	/**
+	 * 在手机上软键盘弹出时,隐藏底部
+	 */
+@media (max-height: 450px) { 
+  .footer {
+    display: none;
+  }
+}
 </style>

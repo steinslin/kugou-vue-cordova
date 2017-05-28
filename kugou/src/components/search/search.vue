@@ -1,8 +1,8 @@
 <template>
 	<div class='view wholepage con bg z2' :style="{backgroundImage: bg}">
 		<search-header ref='searchHeader'></search-header>
-		<transition enter-active-class="animated slideIn animated-in">
-            <router-view></router-view>
+		<transition enter-active-class="animated slideIn fadeIn" leave-active-class='fadeOut animated-out'>
+            <router-view ref='searchresult'></router-view>
         </transition>
 	</div>
 </template>
@@ -26,5 +26,10 @@
 </script>
 
 <style lang='scss' scoped>
-	
+.animated-out{
+	transition-duration: .15s;
+}
+.animated-in{
+	transition-duration: .2s;
+}
 </style>

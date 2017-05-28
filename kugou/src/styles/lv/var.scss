@@ -1,0 +1,34 @@
+
+$border_color       : #186591;
+$img_width          : 50px;
+$color_light        : #99B6C3;
+$color_primary      : #EEF2F5;
+$playholder_color   : #505460;
+$light_color_2      : #00D1FF;
+$light_active_color : #FBF6A9;
+$nav_bg_color       : #213051;
+// prefix
+$css-prefix         : lv;
+
+//color
+$primary-color        :#EEF2F5;
+$primary-color-light  :#99B6C3;
+$primary-border-color :#186591;
+$dark-border-color    :#195275;
+$shadow               :rgba(0,0,0,0.6);
+
+// space
+$space-small  :5px;
+$space-medium :10px;
+$space-mlarge :15px;
+$space-large  :20px;
+
+
+$font-size-normal :12px;
+$font-size-large  :14px;
+$line-height      :1.5;
+
+//map
+$sides       :left right top bottom;
+$distances   :(mg:margin,pd:padding);
+$space-sizes :(small:$space-small,medium:$space-medium,mlarge:$space-mlarge,large:$space-large);

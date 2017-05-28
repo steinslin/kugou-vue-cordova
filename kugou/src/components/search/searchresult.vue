@@ -3,10 +3,10 @@
 		<!-- lv-swipe 必须绑定navArray 头部导航 可选参数activeIndex  -->
 		<!-- lv-swipe-item 必须传递loaded参数 必须绑定ref 格式是item+index
 			 可选参数loadingImg 可选参数loadingText 可选参数loadingFunction-->
-		<lv-swipe :nav-array='navArray'>
-			<lv-swipe-item :loaded='loaded[0]' ref='item0' >
-				<lv-loadmore :refresh='refresh' :loadmore='loadmore'
-				 ref='loadmore' :bottom-all-loaded='allLoaded'>				 
+		<lv-swipe :nav-array='navArray' ref='swipe'>
+			<lv-swipe-item :loaded='loaded[0]' ref='item0' :loading-function='searchSong'>
+				<lv-loadmore :refresh='songRefresh' :loadmore='songLoadmore'
+				 ref='songLoadmore' :bottom-all-loaded='allLoaded'> 
 					<ul class='songlist' slot='data'>
 						<li class='song' v-for='(item,index) in searchSongs'>
 							<div class='con-left'>
@@ -26,7 +26,7 @@
 					</ul>
 				</lv-loadmore>
 			</lv-swipe-item>
-			<lv-swipe-item :loaded='loaded[1]' ref='item1' :loading-function='searchMV'>1</lv-swipe-item>
+			<lv-swipe-item :loaded='loaded[1]' ref='item1' :loading-function='searchMV'></lv-swipe-item>
 			<lv-swipe-item :loaded='loaded[2]' ref='item2' >2</lv-swipe-item>
 			<lv-swipe-item :loaded='loaded[3]' ref='item3' >3</lv-swipe-item>
 			<lv-swipe-item :loaded='loaded[4]' ref='item4' >4</lv-swipe-item>	
@@ -46,10 +46,10 @@
 		name:'searchresult',
 		data(){
 			return{
-				loadmorePage:1,
+				songLoadmorePageIndex:1,
 				allLoaded:false,
 				navArray:['歌曲','MV','专辑','歌单','歌词'],
-				loaded:[true,false,false,false,false]
+				loaded:[false,false,false,false,false]
 			}
 		},
 		components:{
@@ -58,52 +58,79 @@
 			lvSwipeItem,
 		},
 		computed:{
-			...mapState(['searchSongs','page','pagesize'])
+			...mapState(['searchSongs','page','pagesize']),
 		},
 		methods:{
 			searchMV(){
 				setTimeout(()=>{
-					Vue.set(this.loaded, 1, true)
-				},5000)
+					this.loaded.splice(1,1,true)
+					this.$toast({
+						message:'todoMV',
+						position:'bottom',
+						duration:2000
+					})
+				},2000)
 			},
-			getSong(item){
-				console.log('getSong');
-				this.$store.dispatch('getSong',{hash:item.FileHash ,album_id:item.AlbumID,cb:()=>{			
-					// let audio=document.getElementById('audio');
-					// audio.play();
-					// let timer=setInterval(()=>{
-					// 	if(audio.played.length==0){
-					// 		audio.play()
-					// 	}else{
-					// 		clearInterval(timer)
-					// 	}
-					// },300)
-					// this.$store.commit('play');			
-				}})
-			},
-			refresh(){
-				let _this=this;
+			searchSong(){
+				console.log('searchSong');
 				this.$store.dispatch('songSearch',{
 					key:this.$parent.$refs.searchHeader.inputMsg,
 					page:this.page,
 					pagesize:this.pagesize,
-					cb:function(){
-						_this.$refs.loadmore.topLoaded();
-						_this.allLoaded=false
-						_this.loadmorePage=1
+					cb:()=>	{
+						this.loaded.splice(0,1,true)
+						if(this.searchSongs.length<this.pagesize){
+							this.allLoaded=true;
+						}
+					}		
+				})
+			},
+			getSong(item){
+				console.log('getSong');
+				this.$store.dispatch('getSong',{hash:item.FileHash ,album_id:item.AlbumID,cb:()=>{			
+					let audio=document.getElementById('audio');
+					Vue.nextTick(()=>{
+						audio.play();
+						this.$store.commit('play');	
+					})
+					let timer=setInterval(()=>{
+						if(audio.played.length==0){
+							audio.play()
+							this.$store.commit('play');
+						}else{
+							clearInterval(timer)
+						}
+					},300)	
+				}})
+			},
+			songRefresh(){
+				this.$store.dispatch('songSearch',{
+					key:this.$parent.$refs.searchHeader.inputMsg,
+					page:this.page,
+					pagesize:this.pagesize,
+					cb:()=>{
+						this.$refs.songLoadmore.topLoaded();
+						if(this.searchSongs.length<this.pagesize){
+							this.allLoaded=true;
+						}else{
+							this.allLoaded=false
+						}
+						this.songLoadmorePageIndex=1
 					}
 				})
 			},
-			loadmore(){
-				let _this=this;
+			songLoadmore(){
 				this.$store.dispatch('songSearch',{
 					key:this.$parent.$refs.searchHeader.inputMsg,
-					page:++this.loadmorePage,
+					page:++this.songLoadmorePageIndex,
 					pagesize:this.pagesize,
 					flag:true,
-					cb:function(){
-						_this.$refs.loadmore.bottomLoaded();						
-					}
+					cb:()=>{
+						this.$refs.songLoadmore.bottomLoaded()
+						if(this.searchSongs.length<this.songLoadmorePageIndex*this.pagesize){
+							this.allLoaded=true;
+						}
+					}					
 				})
 			}
 		}
@@ -121,8 +148,7 @@
 	.con-mid{
 		flex-grow: 1;
 		border-bottom-width:1px;
-		border-bottom-style:solid;
-		
+		border-bottom-style:solid;		
 		box-sizing: border-box;
 		display: flex;
 	}
@@ -155,20 +181,16 @@
 			white-space: nowrap;
 		}
 		.icon-config{
-			font-size: 5vw;
-			/*position: absolute;
-			right: 3.5vw;*/
 			margin-right:3.5vw;
 			margin-left:3vw;
-			/*top:0;*/
+		}
+		.iconfont{
+			font-size: 5vw;
 			height:2rem;
-			line-height: 2rem
+			line-height: 2rem;
 		}
 		.icon-add{
-			font-size: 5vw;
 			margin-right:3vw;
-			height:1.5rem;
-			line-height: 1.5rem;
 		}
 	}
 </style>

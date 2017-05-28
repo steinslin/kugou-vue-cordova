@@ -5,8 +5,8 @@
 			<v-touch tag="img" v-on:tap='toggleOnOff("top_icons",index)' class='icon' 
 			:src='item.icons[item.selected]'></v-touch>
 		</li>
-		<li v-ripple  @touchstart='press("icon_search")' @touchend='pressup("icon_search")' >
-			<router-link :to='{name:"search"}'>
+		<li  @touchstart='press("icon_search")' @touchend='pressup("icon_search")' >
+			<router-link :to='{name:"search"}' v-ripple >
 				<img class='icon' :src='icon_search.icons[icon_search.selected]'/>
 			</router-link>
 		</li>

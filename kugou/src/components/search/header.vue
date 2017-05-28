@@ -1,17 +1,14 @@
 <template>
 	<div>
 		<div class='header-con'>
-			<!-- <router-link :to='{name:"index"}' class='primary_color'>
-				<v-touch class='iconfont icon-left' tag='i' @tap='back'></v-touch>
-			</router-link> -->
 			<v-touch class='iconfont icon-left' tag='i' v-ripple v-back></v-touch>
 			<div class='search-con'>
 				<i class="iconfont icon-search light_color"></i>
-				<input type="text" class="search-input primary_color" playholder='想听什么歌呢...' autofocus v-model.trim='inputMsg' @keyup.enter='enter' />
+				<input type="text" class="search-input primary_color" playholder='想听什么歌呢...' autofocus v-model.trim='inputMsg' @keyup.enter='enter' @focus='focus'/>
 			</div>
 			<router-link :to='{name:"searchresult"}' replace>
-				<v-touch tag='button' class='search-btn btn-noborder' @tap='searchSong(true)'>搜索</v-touch>	
-			</router-link>				
+				<v-touch v-ripple-btn tag='button' class='search-btn btn-noborder' @tap='search'>搜索</v-touch>
+			</router-link>
 		</div>
 	</div>
 </template>
@@ -29,61 +26,28 @@
 			lvLoadmore
 		},
 		methods:{
+			search(){
+				if(this.$parent.$refs.searchresult){				
+					typeof this.$parent.$refs.searchresult.searchSong=='function' && this.$parent.$refs.searchresult.searchSong();
+				}
+			},
 			enter(){
-				this.searchSong();
+				this.search();
 				this.$router.replace({name:'searchresult'})
 			},
-			searchSong(){
-				this.$store.dispatch('songSearch',{
-					key:this.inputMsg,
-					page:this.page,
-					pagesize:this.pagesize
-				})				
-			},
-			backToIndex(){
-				this.$router.go(-1);
-			},
-			getSong(item){
-				this.$store.dispatch('getSong',{hash:item.FileHash ,album_id:item.AlbumID,cb:()=>{
-					setTimeout(()=>{
-						let audio=document.getElementById('audio');
-						console.log(audio.src);
-						console.log(audio.paused);
-						audio.play();
-						this.$store.commit('play');
-					},300)
-				}})
+			focus(){
+				console.log(this.$route.path)
+				if(this.$route.path!='/2/search'){
+					this.$router.replace({name:'searchHistory'});
+				}		
 			}
-		},
-		watch:{
-			// 'inputMsg':(newval,oldval)=>{
-			// 	this.$store.commit('setInputMsg',newval)
-			// 	//this.$store.dispatch('songSearch',{key:newval})
-			// }
 		}
 	}
 </script>
 
 <style lang='scss' scoped="true">
 $input_bg_color:rgba(17,35,67,0.8);
-.header-con{
-	display: flex;
-	box-sizing: border-box;
-	margin-top: 0.25rem;
-	padding:0.25rem 3vw;
-	height: 1.5rem;
-	*{
-		line-height: 1.15rem;
-		height: 1.15rem;
-	}
-	.iconfont{
-		font-size: 5vw;
-	}
-	.icon-left{
-		margin-right: 4vw;
-		position: relative;
-	}
-}
+
 .search-con{
 	flex-grow: 1;
 	display: flex;

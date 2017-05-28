@@ -1,6 +1,6 @@
 function RippleEffect(element) {
 	this.element = element;
-	this.element.addEventListener('click', this.run.bind(this), false);
+	this.element.addEventListener('touchstart', this.run.bind(this), false);
 }
 RippleEffect.prototype = {
 	run: function(event) {
@@ -29,8 +29,10 @@ RippleEffect.prototype = {
 		ripple.style.width = circleD + 'px';
 		ripple.style.height = circleD + 'px';
 		ripple.style.borderRadius = '500px';
-		ripple.style.left = ((event.pageX - offsetInfo.left) - circleD / 2) + 'px';
-		ripple.style.top = ((event.pageY - offsetInfo.top) - circleD / 2) + 'px';
+		var x = event.pageX || event.touches[0].pageX;
+		var y = event.pageY || event.touches[0].pageY;
+		ripple.style.left = ((x - offsetInfo.left) - circleD / 2) + 'px';
+		ripple.style.top = ((y - offsetInfo.top) - circleD / 2) + 'px';
 		ripple.className = 'ripple';
 		this.element.appendChild(ripple);
 		ripple.addEventListener('animationend', function() {

@@ -1,3 +1,6 @@
+<!--必须绑定navArray(头部导航) 可选参数activeIndex 结合swipe-view-item一起用 
+ navArray的长度必须和swipe-view-item的个数相同-->
+
 <template>
 	<div class="swipe-con" id='swipe-con-id'>
 		<div class="swipe-con-nav" v-if='navArray.length>0'>
@@ -72,9 +75,9 @@ export default{
 		}
 	},
 	mounted (){
+		this.conWidth=document.getElementById('swipe-con-id').clientWidth;
+		this.conContentWidth=document.getElementById('swipe-con-content').clientWidth;
 		if(this.active!==0){
-			this.conWidth=document.getElementById('swipe-con-id').clientWidth;
-			this.conContentWidth=document.getElementById('swipe-con-content').clientWidth;
 			this.navOffsetLeft=this.navOffsetLeftCopy=this.conWidth/this.navArray.length*this.active;
 			this.conOffsetLeft=this.conOffsetLeftCopy=this.conContentWidth/this.navArray.length*this.active*-1;
 		}
@@ -105,16 +108,20 @@ export default{
 			this.startTimeStamp=e.timeStamp;
 		},
 		swipeMove(e){
+			if(!this.swiping){
+				return;
+			}
 			let {startX,startY,conWidth,navArray,conContentWidth,swiping,startTimeStamp}=this;
-			let currentX=this.currentX=e.touches[0].pageX;
-			let currentY=this.currentY=e.touches[0].pageY;
+			let currentX=e.touches[0].pageX;
+			let currentY=e.touches[0].pageY;
 			if(e.timeStamp-startTimeStamp<200&&(!swiping || Math.abs(currentY-startY)>Math.abs(currentX-startX))){
 				this.swiping=false;
 				return;
 			}
-			if(!this.swiping){
-				return;
-			}
+			e.preventDefault();
+            e.stopPropagation();
+			this.currentX=e.touches[0].pageX
+			this.currentY=e.touches[0].pageY;
 			this.navOffsetLeft=this.navOffsetLeftCopy+(startX-currentX)/navArray.length
 			this.conOffsetLeft=this.conOffsetLeftCopy+(currentX-startX)
 		},
@@ -126,6 +133,7 @@ export default{
 				//快速滑动 300ms以内 滑动距离超过FAST_SWIPE_DISTANCE
 				if(e.timeStamp-startTimeStamp<FAST_SWIPE_SECOND && currentX-startX>FAST_SWIPE_DISTANCE || currentX-startX>this.conWidth*SWIPE_LIMIT){
 					this.active=Math.max(--this.active,0);
+					console.log(1);
 					if(this.active==0){
 						this.setOffsetLeft()
 					}
@@ -134,12 +142,15 @@ export default{
 				}
 			}else{//左划
 				if(e.timeStamp-startTimeStamp<FAST_SWIPE_SECOND && Math.abs(currentX-startX)>FAST_SWIPE_DISTANCE || Math.abs(currentX-startX)>this.conWidth*SWIPE_LIMIT){
+					console.log(2);
 					this.active=Math.min(++this.active,navArray.length-1)
 					if(this.active==navArray.length-1){
 						this.setOffsetLeft()
+						console.log(3);
 					}	
 				}else{
 					this.setOffsetLeft();
+					console.log(4);
 				}
 			}
 		}

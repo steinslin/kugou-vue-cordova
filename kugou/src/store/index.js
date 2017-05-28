@@ -13,7 +13,7 @@ import {
 } from '../config/server.js'
 Vue.use(Vuex)
 Vue.use(VueResource)
-
+const playType = localStorage.getItem('playType') || '顺序播放';
 const store = new Vuex.Store({
 	state: {
 		...skin,
@@ -35,6 +35,11 @@ const store = new Vuex.Store({
 		pagesize: 20,
 		recommandsize: 10,
 		searchSongs: [],
+		historyList: [],
+		hotList: [],
+		playList: [],
+		playTypes: ['顺序播放', '随机播放', '单曲循环'],
+		playType
 	},
 	getters: {
 		lyricArray: state => {
@@ -116,6 +121,18 @@ const store = new Vuex.Store({
 		},
 		currentTimeFormat: (state) => {
 			return formatTime(state.currentTime)
+		},
+		audioIndex: (state) => {
+			let {
+				playList,
+				audio
+			} = state;
+			for (let i = 0; i < playList.length; i++) {
+				if (playList[i].hash === audio.hash) {
+					return i;
+				}
+			}
+			return -1;
 		}
 	},
 	mutations: {
@@ -152,8 +169,8 @@ const store = new Vuex.Store({
 			id,
 			btn
 		}) {
-			if (!state.playing)
-				return;
+			// if (!state.playing)
+			// 	return;
 			let {
 				x
 			} = event.center;
@@ -191,6 +208,67 @@ const store = new Vuex.Store({
 		},
 		comcatSearchSongs(state, data) {
 			state.searchSongs = state.searchSongs.concat(data);
+		},
+		getHistoryList(state) {
+			if (state.historyList.length == 0 && localStorage) {
+				state.historyList = JSON.parse(localStorage.getItem('historyList')) || [];
+			}
+			//	state.historyList = ['初音未来', 'miku']
+		},
+		clearHistoryList(state) {
+			localStorage.removeItem('historyList')
+			state.historyList = [];
+		},
+		getHotList(state) {
+
+			state.hotList = ['金曲捞', '音乐故事', '徐佳莹', '其实都没有', '张碧晨', '李宇春 在吗', '友情卡片']
+		},
+		pushHistoryList(state, key) {
+			let his = state.historyList;
+			// his.push(key);
+			his.unshift(key);
+			his = [...new Set(his)];
+			state.historyList = his;
+			localStorage.setItem('historyList', JSON.stringify(his))
+		},
+		deleteHisItem(state, index) {
+			state.historyList.splice(index, 1);
+			localStorage.setItem('historyList', JSON.stringify(state.historyList))
+		},
+		addInPlayList(state, newaudio) {
+			let {
+				audio,
+				playList
+			} = state;
+			for (let i = 0; i < playList.length; i++) {
+				if (playList[i].hash === newaudio.hash) {
+					return;
+				}
+			}
+			if (audio.play_url != '' && audio.hash) {
+				for (let i = 0; i < playList.length; i++) {
+					if (playList[i].hash === audio.hash) {
+						state.playList.splice(++i, 0, newaudio);
+						break;
+					}
+				}
+			} else {
+				state.playList.push(newaudio);
+			}
+		},
+		changePlayType(state, cb) {
+			let {
+				playType,
+				playTypes
+			} = state;
+			let _index = 0;
+			playTypes.forEach((val, index) => {
+				if (val === playType) {
+					state.playType = playTypes[++index % playTypes.length];
+					typeof cb == 'function' && cb();
+					return;
+				}
+			})
 		}
 	},
 	actions: {
@@ -207,6 +285,10 @@ const store = new Vuex.Store({
 			}, {
 				emulateJSON: true
 			}).then(res => {
+				res.body.data.hash = hash;
+				//加入到播放队列
+				state.commit('addInPlayList', res.body.data);
+				//修改播放音频
 				state.commit('setAudio', res.body.data);
 				typeof cb == 'function' && cb();
 			})
@@ -218,6 +300,9 @@ const store = new Vuex.Store({
 			flag,
 			cb
 		}) {
+			if (key) {
+				state.commit('pushHistoryList', key)
+			}
 			Vue.http.get(apis.searchSong, {
 				params: {
 					keyword: key,

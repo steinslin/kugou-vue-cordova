@@ -1,13 +1,12 @@
 function RippleEffect(element, id) {
 	this.id = id;
 	this.element = element;
-	this.element.addEventListener('click', this.run.bind(this), false);
+	this.element.addEventListener('touchstart', this.run.bind(this), false);
 }
 RippleEffect.prototype = {
 	run: function(event) {
 		var ripplerContainer = this.element.querySelector('.ripple-container');
 		var offsetInfo = this.element.getBoundingClientRect();
-		console.log(offsetInfo)
 		if (ripplerContainer) {
 			ripplerContainer.remove();
 		}
@@ -25,6 +24,8 @@ RippleEffect.prototype = {
 		}
 		let scrollTop = scrollTarget.scrollTarget || 0;
 		var rippleContainer = document.createElement('div');
+		let currentStyle = this.element.currentStyle ? this.element.currentStyle : document.defaultView.getComputedStyle(this.element, null)
+		rippleContainer.style.borderRadius = currentStyle.borderRadius;
 		rippleContainer.style.position = 'fixed';
 		rippleContainer.style.zIndex = 99;
 		rippleContainer.style.width = offsetInfo.width + 'px';
@@ -34,10 +35,8 @@ RippleEffect.prototype = {
 		rippleContainer.className = 'ripple-container';
 		rippleContainer.style.overflow = 'hidden';
 		if (!this.id) {
-			console.log(2);
 			this.element.appendChild(rippleContainer);
 		} else {
-			console.log(1);
 			document.getElementById(this.id).appendChild(rippleContainer)
 		}
 		var circleD = offsetInfo.width * 2;
@@ -47,8 +46,10 @@ RippleEffect.prototype = {
 		ripple.style.width = circleD + 'px';
 		ripple.style.height = circleD + 'px';
 		ripple.style.borderRadius = '500px';
-		ripple.style.left = ((event.pageX - offsetInfo.left) - circleD / 2) + 'px';
-		ripple.style.top = ((event.pageY - offsetInfo.top) - circleD / 2) + 'px';
+		var x = event.pageX || event.touches[0].pageX;
+		var y = event.pageY || event.touches[0].pageY;
+		ripple.style.left = ((x - offsetInfo.left) - circleD / 2) + 'px';
+		ripple.style.top = ((y - offsetInfo.top) - circleD / 2) + 'px';
 		ripple.className = 'ripple';
 		rippleContainer.appendChild(ripple);
 		ripple.addEventListener('animationend', function() {
@@ -60,7 +61,6 @@ RippleEffect.prototype = {
 export default {
 	name: 'rippleBtn',
 	bind(el, binding) {
-		console.log(binding.value);
 		new RippleEffect(el, binding.value);
 	}
 }

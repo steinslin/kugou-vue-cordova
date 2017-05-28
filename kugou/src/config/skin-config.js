@@ -2,11 +2,19 @@ let commom_1 = '/res/drawable-xhdpi-v4';
 let commom_2 = '/res/drawable-xxhdpi-v4';
 let skin_config = {
 	selected: 0,
-	skins: ['elk', 'christmaseve', 'starrysky', 'cat', 'cute', 'sloth']
+	skins: ['elk', 'christmaseve', 'starrysky', 'cute', ]
+}
+if (localStorage) {
+	let selected = localStorage.getItem('skin_config_selected');
+	if (selected && typeof selected == 'number') {
+		skin_config.selected = selected
+	}
 }
 let dir = `static/skins/${skin_config.skins[skin_config.selected]}${commom_1}`;
 let skin = {
+	indexBg: `${dir}/skin_kg_navigation_local_entry_bg.png`,
 	bg: `${dir}/skin_main_bg.png`,
+	dialogBg: `${dir}/skin_dialog_bg.png`,
 	avatar: `static/skins/avatar.jpg`,
 	top_icons: [{
 		icons: [`${dir}/skin_kg_comm_ic_main_top_ting_off.png`, `${dir}/skin_kg_comm_ic_main_top_ting_on.png`],

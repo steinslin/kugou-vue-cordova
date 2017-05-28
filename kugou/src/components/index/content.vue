@@ -1,6 +1,18 @@
 <template>
 	<div>
-		<div class='con con-head'>
+		<div class='con con-head' :style='{backgroundImage:bg,backgroundSize:cover}'>
+			<ul id='header'>
+			<li v-ripple><img class='avatar' :src="avatar"></li>
+			<li v-ripple v-for='(item,index) in top_icons'>
+				<v-touch tag="img" v-on:tap='toggleOnOff("top_icons",index)' class='icon' 
+				:src='item.icons[item.selected]'></v-touch>
+			</li>
+			<li  @touchstart='press("icon_search")' @touchend='pressup("icon_search")' >
+				<router-link :to='{name:"search"}' v-ripple >
+					<img class='icon' :src='icon_search.icons[icon_search.selected]'/>
+				</router-link>
+			</li>
+		</ul>
 			<ul>
 				<v-touch tag='li' v-ripple v-for='(item,index) in top_action_icons' @press='press("top_action_icons",index)' @pressup='pressup("top_action_icons",index)' @tap='go(index)'>
 					<img class='icon' :src='item.icons[item.selected]' />
@@ -87,11 +99,15 @@
 </template>
 
 <script type="es6">
-	import { mapState } from 'vuex'	
+	import { mapState } from 'vuex'
+	import {
+    indexBg
+} from '../../config/skin-config.js'
 	export default {
 		data(){
 			return{
-				ul_close:true
+				ul_close:true,
+				bg:`url(${indexBg})`
 			}
 		},
 		computed:{
@@ -104,12 +120,14 @@
 				'center_nav_icons',
 				'earphone',
 				'game',
-				'generalize'
+				'generalize',
+				'top_icons',
+				'icon_search',
+				'avatar'
 			])
 		},
 		methods:{
 			press(key,index){
-				console.log(this);
 				this.$store.commit('press',{key,index});
 			},
 			pressup(key,index){
@@ -147,6 +165,12 @@
 			toggleActionNav(){
 				this.ul_close=!this.ul_close;
 
+			},
+			toggleOnOff(key,index){
+				this.$store.commit('toggleOnOff',{
+					key,
+					index
+				});
 			}
 		}
 	}
@@ -232,7 +256,7 @@ ul{
 	}
 	i._right{
 		font-size:3.6vw;
-		transform:translateY(1.12vh);
+		transform:translateY(0.8vh);
 	}
 }
 .action-bar{
@@ -250,5 +274,90 @@ ul{
 	flex-grow:1;
 	border-bottom-style:solid;
 	border-bottom-width:1px;
+}
+
+ul#header{
+	padding: 2vh 4vw 0px 4vw;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	li{
+		width: 12vw;
+		text-align: center;
+		position:relative;
+		&:last-child{
+			.icon{
+				width: 5vw;
+				position: absolute;
+				margin: auto;
+				left: 0;
+				right: 0;
+				top:0;
+				bottom: 0;
+				transform:translateY(-0.352vh);
+			}
+		};
+	}
+	.avatar{
+		width:9.17vw;
+		height:9.17vw;
+		border-radius:50%;
+		position: absolute;
+		margin: auto;
+		left: 0;
+		right: 0;
+		top:0;
+		bottom: 0;
+		transform:translateY(-0.352vh);
+		margin-left: 1vw;
+	}
+	.icon{
+		width:11.5vw;;
+		height: auto;
+	}
+}
+ul#header{
+	padding: 2vh 4vw 0px 4vw;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	li{
+		width: 12vw;
+		text-align: center;
+		position:relative;
+		&:last-child{
+			.icon{
+				width: 5vw;
+				position: absolute;
+				margin: auto;
+				left: 0;
+				right: 0;
+				top:0;
+				bottom: 0;
+				transform:translateY(-0.352vh);
+			}
+		};
+	}
+	.avatar{
+		width:9.17vw;
+		height:9.17vw;
+		border-radius:50%;
+		position: absolute;
+		margin: auto;
+		left: 0;
+		right: 0;
+		top:0;
+		bottom: 0;
+		transform:translateY(-0.352vh);
+		margin-left: 1vw;
+	}
+	.icon{
+		width:11.5vw;;
+		height: auto;
+	}
 }
 </style>
