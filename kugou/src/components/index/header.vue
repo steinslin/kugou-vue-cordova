@@ -1,3 +1,4 @@
+
 <template>
 	<ul>
 		<li v-ripple><img class='avatar' :src="avatar"></li>
@@ -42,10 +43,24 @@
 </script>
 
 <style scoped lang='scss'>
+@import '../../styles/lv/var.scss';
 ul{
 	padding: 2vh 4vw 0px 4vw;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
+	position: relative;
+        &:before{
+            z-index:-1;
+            content: "";
+            display: block;
+            position:absolute;
+            width: 200%;
+            left:0;
+            top:0;
+            transform-origin: 0 0;
+            height: 200%;
+            border-bottom: 1px solid $dark-border-color;
+            transform: scale(.5);
+        }
+	
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;

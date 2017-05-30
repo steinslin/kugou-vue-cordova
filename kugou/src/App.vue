@@ -159,9 +159,14 @@ body .mint-msgbox-content{
 }
 
 .small {
-    font-size: 3.75vw;
+    font-size: 3vw;
+    line-height: 1.2;
 }
 
+.medium{
+    font-size: 4.5vw;
+    line-height: 1.3;
+}
 .iconfont {
     display: inline-block;
 }

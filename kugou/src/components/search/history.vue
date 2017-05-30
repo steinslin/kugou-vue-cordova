@@ -5,7 +5,7 @@
 			<span>歌手分类</span>
 			<i class="iconfont icon-right"></i>
 		</div>
-		<div class="lv-container lv-bottom-border" v-if='hotList && hotList.length>0'>
+		<div class="lv-container header lv-bottom-border" v-if='hotList && hotList.length>0'>
 			<div class='lv-container lv-primary-color-light'>热门搜索</div>
 			<ul class='lv-container lv-mg-minus-bottom-medium lv-mg-minus-right-medium'>
 				<v-touch v-for='item in hotList' v-ripple-btn class="lv-container-circle" tag='li' @tap='searchSong($event,item)'>{{item}}</v-touch>			
@@ -19,14 +19,14 @@
 					</div>
 					<div class="lv-flex-grow lv-flex">
 						<div class="lv-flex-grow lv-container-medium">{{item}}</div>
-						<div class="lv-container-medium stop-propogation" @click.stop='deleteHisItem(index)'>
-							<i class="iconfont icon-close stop-propogation"></i>
+						<div class="lv-container-medium stop-propogation" >
+							<i class="iconfont icon-close stop-propogation" @click.stop='deleteHisItem(index)'></i>
 						</div>
 					</div>
 				</div>
 			</v-touch>
 		</ul>
-		<div v-if='historyList && historyList.length>0' class="lv-bottom-border lv-container-mlarge lv-align-center lv-font-large" v-ripple-btn @click='clearHis'>清空搜索历史
+		<div v-if='historyList && historyList.length>0' class=" lv-container-mlarge lv-align-center lv-font-large" v-ripple-btn @click='clearHis'>清空搜索历史
 		</div>
 	</div>
 </template>
@@ -48,6 +48,7 @@ import {mapState} from 'vuex'
 		},
 		methods:{
 			searchSong($event,key){
+				console.log($event.target.className);
 				if($event.target.className.indexOf('stop-propogation')!=-1){
 					console.log('stop');
 					return;
@@ -61,8 +62,7 @@ import {mapState} from 'vuex'
 				Vue.nextTick(()=>{
 					let el=document.querySelector('.mint-msgbox');
 					el.style.backgroundImage=`url(${this.dialogBg})`
-					el.style.backgroundSize='cover';
-					
+					el.style.backgroundSize='cover';				
 				})
 			},
 			deleteHisItem(index){
@@ -73,7 +73,8 @@ import {mapState} from 'vuex'
 </script>
 
 <style scoped>
-	.nopdleftright{
+@import '../../styles/lv/var.scss';
+	.lv-container-medium.nopdleftright{
 		padding-left:0;
 		padding-right: 0;
 	}
@@ -85,12 +86,31 @@ import {mapState} from 'vuex'
 		padding:5px 8px;
 	}
 	li div.lv-bottom-border{
-		border-bottom:1px solid #195275;
+		/*border-bottom:1px solid #195275;*/
+		/*&:before{
+            content: "";
+            display: block;
+            position:absolute;
+            width: 200%;
+            left:0;
+            top:0;
+            transform-origin: 0 0;
+            height: 200%;
+            border-bottom: 1px solid $dark-border-color;
+            transform: scale(.5);
+        }*/
+
 	}
-	li:last-child .lv-bottom-border{
-		border-bottom: none;
+	.lv-bottom-border:last-child{
+		/*border-bottom: none;*/
+		&:before{
+            border-bottom:none;
+        }
 	}
 	.icon-close{
 		margin-right: 0px;
+	}
+	.header.lv-bottom-border:last-child:before{
+		border-bottom:none;
 	}
 </style>

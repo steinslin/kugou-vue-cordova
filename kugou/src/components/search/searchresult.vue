@@ -10,7 +10,7 @@
 					<ul class='songlist' slot='data'>
 						<li class='song' v-for='(item,index) in searchSongs'>
 							<div class='con-left'>
-								<i class='iconfont icon-add primary_color'></i>
+								<i class='iconfont icon-add primary_color' @click.stop='addInPlayList(item)'></i>
 							</div>
 							<div class='con-mid'>
 								<v-touch class='songNameItem' @tap='getSong(item)' v-ripple-btn='"ripple"'>
@@ -103,6 +103,11 @@
 					},300)	
 				}})
 			},
+			addInPlayList(item){
+				this.$store.dispatch('getSong',{hash:item.FileHash,album_id:item.AlbumID,cb:()=>{
+					
+				},flag:false})
+			},
 			songRefresh(){
 				this.$store.dispatch('songSearch',{
 					key:this.$parent.$refs.searchHeader.inputMsg,
@@ -139,6 +144,7 @@
 
 
 <style lang='scss' scoped="true">
+@import '../../styles/lv/var.scss';
 .con{
 	height: 21rem;
 	overflow-y:auto;
@@ -147,8 +153,22 @@
 	}
 	.con-mid{
 		flex-grow: 1;
-		border-bottom-width:1px;
-		border-bottom-style:solid;		
+		/*border-bottom-width:1px;
+		border-bottom-style:solid;*/
+		position: relative;
+        &:before{
+            z-index:-1;
+            content: "";
+            display: block;
+            position:absolute;
+            width: 200%;
+            left:0;
+            top:0;
+            transform-origin: 0 0;
+            height: 200%;
+            border-bottom: 1px solid $dark-border-color;
+            transform: scale(.5);
+        }
 		box-sizing: border-box;
 		display: flex;
 	}
@@ -163,7 +183,7 @@
 			padding-left: 3.5vw;
 			width: 100%;
 			display: flex;
-			&:nth-last-child(1) .con-mid{
+			&:nth-last-child(1) .con-mid:before{
 				border:none;
 			}
 		}

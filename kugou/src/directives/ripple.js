@@ -1,6 +1,6 @@
 function RippleEffect(element) {
 	this.element = element;
-	this.element.addEventListener('touchstart', this.run.bind(this), false);
+	this.element.addEventListener('click', this.run.bind(this), false);
 }
 RippleEffect.prototype = {
 	run: function(event) {

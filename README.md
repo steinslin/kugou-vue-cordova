@@ -6,15 +6,14 @@
 cd kugou  
 #安装依赖  
 npm install  
+
 #在浏览器中预览 请使用chrome切换成手机模式  
 npm run dev  
 
-#如果要编译成app  
-npm run build  
-cd ..  
+#如果要编译成app  请安装cordova
 #添加平台 android或ios 具体环境搭建google  
-cordova platform add android  
-#在手机预览 手机连接电脑usb 开启usb调试 连接电脑wifi  
+cordova platform add android   
+#在手机预览 手机连接电脑usb 开启usb调试 连接电脑wifi 
+npm run android 
 #开启服务器（npm run dev时会自动开启）  
-node proxy.js  
-cordova run android   
+node proxy.js 

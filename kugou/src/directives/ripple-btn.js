@@ -1,12 +1,13 @@
 function RippleEffect(element, id) {
 	this.id = id;
 	this.element = element;
-	this.element.addEventListener('touchstart', this.run.bind(this), false);
+	this.element.addEventListener('click', this.run.bind(this), false);
 }
 RippleEffect.prototype = {
 	run: function(event) {
 		var ripplerContainer = this.element.querySelector('.ripple-container');
 		var offsetInfo = this.element.getBoundingClientRect();
+		console.log(offsetInfo);
 		if (ripplerContainer) {
 			ripplerContainer.remove();
 		}
@@ -31,7 +32,7 @@ RippleEffect.prototype = {
 		rippleContainer.style.width = offsetInfo.width + 'px';
 		rippleContainer.style.left = offsetInfo.left + 'px';
 		rippleContainer.style.top = offsetInfo.top + 'px';
-		rippleContainer.style.height = offsetInfo.height + scrollTop + 'px';
+		rippleContainer.style.height = Math.ceil(offsetInfo.height + scrollTop) + 'px';
 		rippleContainer.className = 'ripple-container';
 		rippleContainer.style.overflow = 'hidden';
 		if (!this.id) {

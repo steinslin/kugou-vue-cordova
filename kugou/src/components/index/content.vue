@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class='con con-head' :style='{backgroundImage:bg,backgroundSize:cover}'>
+		<div class='con con-head' :style='{backgroundImage:bg,backgroundSize:"cover"}'>
 			<ul id='header'>
 			<li v-ripple><img class='avatar' :src="avatar"></li>
 			<li v-ripple v-for='(item,index) in top_icons'>
@@ -177,6 +177,7 @@
 </script>
 
 <style scoped lang="scss">
+@import '../../styles/lv/var.scss';
 .con{
 	padding:0px 4vw;
 }
@@ -194,8 +195,20 @@
 }
 ul{
 	padding: 2.5vh 3vw;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
+	position: relative;
+    &:before{
+        z-index:-1;
+        content: "";
+        display: block;
+        position:absolute;
+        width: 200%;
+        left:0;
+        top:0;
+        transform-origin: 0 0;
+        height: 200%;
+        border-bottom: 1px solid $dark-border-color;
+        transform: scale(.5);
+    }
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -272,59 +285,24 @@ ul{
 	display:inline-block;
 	padding:1.5vh 0px 2.5vh 0;
 	flex-grow:1;
-	border-bottom-style:solid;
-	border-bottom-width:1px;
+	position: relative;
+    &:before{
+        z-index:-1;
+        content: "";
+        display: block;
+        position:absolute;
+        width: 200%;
+        left:0;
+        top:0;
+        transform-origin: 0 0;
+        height: 200%;
+        border-bottom: 1px solid $dark-border-color;
+        transform: scale(.5);
+    }
 }
 
 ul#header{
-	padding: 2vh 4vw 0px 4vw;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	li{
-		width: 12vw;
-		text-align: center;
-		position:relative;
-		&:last-child{
-			.icon{
-				width: 5vw;
-				position: absolute;
-				margin: auto;
-				left: 0;
-				right: 0;
-				top:0;
-				bottom: 0;
-				transform:translateY(-0.352vh);
-			}
-		};
-	}
-	.avatar{
-		width:9.17vw;
-		height:9.17vw;
-		border-radius:50%;
-		position: absolute;
-		margin: auto;
-		left: 0;
-		right: 0;
-		top:0;
-		bottom: 0;
-		transform:translateY(-0.352vh);
-		margin-left: 1vw;
-	}
-	.icon{
-		width:11.5vw;;
-		height: auto;
-	}
-}
-ul#header{
-	padding: 2vh 4vw 0px 4vw;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
+	padding: 2vh 0vw 0px 2vw;
 	li{
 		width: 12vw;
 		text-align: center;

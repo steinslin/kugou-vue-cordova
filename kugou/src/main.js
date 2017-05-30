@@ -37,6 +37,7 @@ Vue.directive('back', vBack)
 
 Vue.directive('tap', vTap)
 
+
 Vue.use(store)
 
 /* eslint-disable no-new */

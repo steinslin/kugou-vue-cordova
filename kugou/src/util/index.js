@@ -1,9 +1,9 @@
 function formatTime(time) {
 	time = Number(time);
 	if (time % 60 < 10) {
-		return `${parseInt(time/60)}:0${time%60}`;
+		return `${parseInt(time/60)}:0${parseInt(time%60)}`;
 	} else {
-		return `${parseInt(time/60)}:${time%60}`;
+		return `${parseInt(time/60)}:${parseInt(time%60)}`;
 	}
 }
 

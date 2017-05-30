@@ -32,18 +32,48 @@ body{
         padding:$space-small $space-medium;
         margin-right:$space-small;
         margin-bottom:$space-medium;
+        position: relative;
+        /*border:1px solid $dark-border-color;*/
         border-radius:$font-size-normal * $line-height + $space-small * 2;
-        border:1px solid $dark-border-color;
+        &:before{
+            content: "";
+            display: block;
+            position:absolute;
+            width: 200%;
+            left:0;
+            top:0;
+            transform-origin: 0 0;
+            height: 200%;
+            border-radius:$font-size-normal * $line-height + $space-small * 2;
+            border: 1px solid $dark-border-color;
+            transform: scale(.5);
+        }
     }
     &-hover-bg:active{
         transition: all .2s ease;
         background-color:$primary-color-light;
     }
     &-bottom-border{
-        border-bottom:1px solid $dark-border-color;
-        &:last-child{
-            border:none;
+        position: relative;
+        &:before{
+            z-index:-1;
+            content: "";
+            display: block;
+            position:absolute;
+            width: 200%;
+            left:0;
+            top:0;
+            transform-origin: 0 0;
+            height: 200%;
+            border-bottom: 1px solid $dark-border-color;
+            transform: scale(.5);
         }
+        /*border-bottom:1px solid $dark-border-color;*/
+        /*&:last-child{
+            &:before{
+                border-bottom:none;
+            }
+        }*/
     }
     &-overflow-auto{
         overflow:auto;
@@ -56,6 +86,11 @@ body{
     }
     &-flex{
         display:flex;
+        flex-wrap: wrap;
+        &-nowrap{
+            flex-wrap: nowrap;
+            display: flex;
+        }
     }
     &-flex-grow{
         flex-grow:1;
@@ -114,5 +149,16 @@ body{
         display:flex;
         justify-content: center;
         align-items: center;
+    }
+    &-one-line{
+        height:2rem;
+        box-sizing: border-box;
+        vertical-align: middle;
+        text-indent: 13px;
+    }
+    &-text-ellipsis{
+        text-overflow: ellipsis;
+        overflow:hidden;
+        white-space: nowrap;
     }
 }

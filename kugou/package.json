@@ -8,7 +8,7 @@
         "dev": "node build/dev-server.js",
         "build": "node build/build.js",
         "lint": "eslint --ext .js,.vue src",
-        "android": "cd .. && cordova run android"
+        "android": "node build/build.js && cd .. && cordova run android"
     },
     "dependencies": {
         "animate.css": "^3.5.2",

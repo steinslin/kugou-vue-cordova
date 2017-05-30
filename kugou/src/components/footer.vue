@@ -19,31 +19,45 @@
 				<div class='audio con-right _relative'>
 					<v-touch class='progress-bar unfinish' id='unfinish'>
 						<div class='finish' :style='{width:rate_of_progress}'></div>
-						<v-touch @pan='setRateOfProgress($event,"unfinish",".slider-btn")' @panend='panend' class='slider-btn-con'  :style='{left:rate_of_progress}'>
-							<div class='slider-btn'></div>
+						<v-touch @pan='setRateOfProgress($event,"unfinish",".slider-btn")' @panend='panend' class='slider-btn-con'  :style='{left:rate_of_progress}' :class='showLyric?"scale":""'>
+							<div class='slider-btn' ></div>						
 						</v-touch>			
 					</v-touch>
-					<div class='song-name text-no-wrap'>{{audio.song_name}}</div>
-					<div class='author-name light_color text-no-wrap'>{{audio.author_name}}</div>
+					<div class='lv-flex-nowrap lv-center' >
+						<div class="lv-flex-grow">
+							<div class='song-name text-no-wrap'>{{audio.song_name || '酷狗音乐'}}</div>
+							<div class='author-name light_color text-no-wrap'>{{audio.author_name || '一缕阳光,暖人灵魂'}}</div>
+						</div>
+						<div class="lv-spin" v-if='audioLoading'>
+							<div class="lv-spin-icon"></div>
+						</div>
+					</div>
 					<v-touch class='controll-btn' >
 						<v-touch tag='img' v-if='playing' :src="controll_stop_icons.icons[controll_stop_icons.selected]" @touchstart='press("controll_stop_icons")' @touchend='pressup("controll_stop_icons")'  @tap='stop()' ></v-touch>
 						<v-touch tag='img' v-else :src="controll_play_icons.icons[controll_play_icons.selected]" @touchstart='press("controll_play_icons")' @touchend='pressup("controll_play_icons")'  @tap='play' ></v-touch>
 					</v-touch>
 					<v-touch class='next-btn' >
-						<img :src='next_icons.icons[next_icons.selected]' @touchstart='press("next_icons")' @touchend='pressup("next_icons")' />
+						<v-touch tag='img' :src='next_icons.icons[next_icons.selected]' @touchstart='press("next_icons")' @touchend='pressup("next_icons")' @tap='nextSong'>
+						</v-touch>
 					</v-touch>
 					<v-touch class='song-list-btn' @tap='togglePlayList'>
 						<img :src='song_list_icons.icons[song_list_icons.selected]' @touchstart='press("song_list_icons")' @touchend='pressup("song_list_icons")' @tap='showSongList()'/>
 					</v-touch>
 				</div>
 			</div>
-			<audio :src='audio.play_url' id='audio' @timeupdate='timeupdate()'></audio>
+			<audio :src='audio.play_url' id='audio' @timeupdate='timeupdate()' v-ready-listen:playing='playing'></audio>
+			<transition enter-active-class="animated fadeIn" leave-active-class='fadeOut animated'>
+				<div v-if='showLyric' class='lyricBox lv-flex-nowrap'>
+					<div class="time">{{currentTimeFormat}}</div>
+					<div class="lv-text-ellipsis lv-flex-grow" v-if='currentLyrics.length>0'>{{currentLyric}}</div>
+				</div>
+			</transition>
 		</v-touch>
 	</div>
 </template>
 
 <script type="es6">
-	import ripple from '../directives/ripple.js';
+	import readyListen from '../directives/v-ready-listen.js';
 	import { mapState ,mapGetters} from 'vuex'
 	import { formatTime,timeToSecond } from '../util';
 	export default {
@@ -51,7 +65,9 @@
 			return{
 				left:'-78vw',
 				paning:false,
-				panendToPlay:false
+				panendToPlay:false,
+				audioLoading:false,
+				showLyric:false
 			}
 		},
 		computed:{
@@ -59,6 +75,7 @@
 			...mapState([
 				'play_bg',
 				'singer_default_play_bg',
+				'slider_btn',
 				'audio',
 				'hash',
 				'album_id',
@@ -109,11 +126,18 @@
 				}
 			},
 			lyricNextHighlightWidth(){
-				let {lyricArray,currentLyrics,currentTime}=this;
+				let {lyricArray,currentLyrics,currentTime,audio}=this;
 				if(currentLyrics.length<=1)
 					return '0%';
-				let lyricStartTime= timeToSecond(lyricArray[currentLyrics[1].index].time);
-				let lyricEndTime= timeToSecond(lyricArray[currentLyrics[1].index+1].time);
+				let startIndex=currentLyrics[1].index;
+				let lyricStartTime= timeToSecond(lyricArray[startIndex].time);
+				let endIndex=currentLyrics[1].index+1;
+				let lyricEndTime;
+				if(endIndex>=lyricArray.length){
+					lyricEndTime=audio.timelength/1000;
+				}else{
+					lyricEndTime= timeToSecond(lyricArray[endIndex].time);
+				}
 				return `${Math.min(Math.max(currentTime-lyricStartTime,0)/(lyricEndTime-lyricStartTime)*100,100)}%`
 			},
 			lyric_next_right(){
@@ -140,13 +164,37 @@
 				}else{
 					return '0vw';
 				}
+			},
+			currentTimeFormat(){
+				return formatTime(this.currentTime);
+			},
+			currentLyric(){
+				let {currentTime,currentLyrics,lyricArray}=this;
+				if(currentLyrics.length==0){
+					return '';
+				}
+				if(currentLyrics.length==1){
+					return currentLyrics[0].lyric;
+				}
+				let endDis=timeToSecond(lyricArray[currentLyrics[1].index].time)
+				return endDis>currentTime?currentLyrics[0].lyric:currentLyrics[1].lyric
+				// return startDis<endDis?currentLyrics[0].lyric:currentLyrics[1].lyric
 			}
 		},
-		directives:{
-			ripple
+		directives:{		
+			readyListen:{
+				bind(el,bindings,vnode){
+					el.onended=()=>vnode.context.$store.commit('audioEnd',vnode.context.audioIndex);
+				},
+				componentUpdated(el,bindings,vnode){
+					return vnode.context.audioLoading=el.readyState!=4 && bindings.value?true:false
+				}
+			}
 		},
 		created(){
-			this.$store.dispatch('getSong',{hash:this.hash,album_id:this.album_id});
+			this.$store.commit('createdGetAudio',()=>{
+				this.$store.dispatch('getSong',{hash:this.hash,album_id:this.album_id});
+			})
 		},
 		methods:{
 			press(key){
@@ -157,8 +205,10 @@
 			},
 			setRateOfProgress(event,id,btn){
 				if(document.getElementById('audio').src!=''){
+					if(!this.panendToPlay){					
+						this.panendToPlay=this.playing
+					}
 					this.$store.commit('setRateOfProgress',{event,id,btn})
-					this.panendToPlay=this.playing?true:false;			
 					this.showLyrics();
 					this.paning=true;
 				}				
@@ -181,6 +231,7 @@
 			panend(){
 				let audio=document.getElementById('audio');
 				this.paning=false;
+				this.showLyric=false;
 				if(this.panendToPlay && audio.src!=''){
 					audio.play();
 					this.$store.commit('play');
@@ -191,7 +242,10 @@
 				this.$store.commit('timeupdate');
 			},
 			showLyrics(){
-
+				this.showLyric=true;
+			},
+			nextSong(){
+				this.$store.commit('nextSong',this.audioIndex)
 			},
 			togglePlayList(){
 				this.$parent.$refs.playList.showPlayList=!this.$parent.$refs.playList.showPlayList;
@@ -210,6 +264,9 @@
 	$finish_color:rgb(81,204,255);
 	$unfinish_color:rgb(1,50,77);
 	$highlight_color:rgb(1,141,172);
+	.footer .animated{
+		animation-duration: .5s;
+	}
 	div.con{
 		display:flex;
 		transition: 0.5s all ease;
@@ -243,9 +300,7 @@
 			left:2vw;
 			width:2.1925rem;
 			height:2.1925rem;
-			border:2px solid rgb(86,88,91);
-			border-radius:50%;
-			overflow:hidden;
+			
 			transition: all 0.5s linear;
 			&.stop{
 				transition: all 0s linear;
@@ -255,6 +310,7 @@
 			height:2.1925rem;
 			width:2.1925rem;
 			border-radius:50%;
+			border:2px solid rgb(1,50,77);
 			transition: all 0.5s linear;
 			&.paused{
 				transition: all 0s linear;
@@ -290,7 +346,23 @@
   			margin-top:0;
 		}
 	}
-	.audio{
+	.lyricBox{
+		position: fixed;
+		background-color:rgba(81,204,255,.8);
+		padding:7px 15px;
+		border-radius: 5px;
+		font-size: 4vw;
+		line-height: 1.3;
+		bottom:3rem;
+		left:50%;
+		width:90vw;
+		transform: translateX(-50%);
+		.lv-flex-grow{
+			width:100px;
+			text-align:center;
+		}
+	}
+	#app .audio{
 		div.progress-bar{
 			width:100%;
 			height:0.088rem; /*2px*/
@@ -307,47 +379,70 @@
 		}
 		.slider-btn-con{
 			position:absolute;
-			width: 0.5rem;
-			height: 0.5rem;
 			border-radius:100%;
-			transform: translate(-0.15rem,-0.1rem);
+			transform: translate(-0.2rem,-0.2rem);
+			border-style: solid;
+			border-width: 0.15rem;
+			border-color: transparent;
+			&.scale{
+				border-color: $finish_color;
+			}
 			.slider-btn{
 				width:0.35rem;
 				height:0.35rem;
 				background:$finish_color;
 				border-radius:100%;
 				overflow:hidden;
-				/*transform: translate(-0.4vh,-0.4vh);*/
 			}
+		}
+		.lv-flex-nowrap{
+			width: 46vw;
+			margin-top:0.25rem;
+		}
+		.lv-flex-grow{
+			width:6vw;
+		}
+		.lv-spin{
+			display: block;	        
+	        z-index: 1031;
+	        right:0px;
+	        top:1vw;
+	        margin-left:1vw;
+		}
+		.lv-spin-icon{
+			width:5vw;
+			height: 5vw;
+	        box-sizing: border-box;        
+	        border-top:2px solid #51ccff;
+	        border-left:2px solid #51ccff;
+	        border-radius: 50%;
+	        animation: spin .5s linear infinite;
 		}
 		.song-name{
 			font-size: 3.8vw;
-			margin-top:0.2rem;
-			width:44vw;
 			line-height: 1.2
 		}
 		.author-name{
 			font-size: 3vw;
-			width:44vw;	
 			line-height: 1.2
 		}
 		.controll-btn,.song-list-btn,.next-btn{
 			position:absolute;
-			bottom:0.625rem;
-			transform: translateY(0.45rem);
+			bottom:0.2rem;
+			height: 10vw;
 			img{
 				width:10vw;
 			}
 		}
 		.controll-btn{
-			right: 23vw;
+			right: 19vw;
 			/*transform: translateY(0.45rem);
 			img{
 				width:9vw;
 			}*/
 		}
 		.next-btn{
-			right:11vw;
+			right:9vw;
 		}
 		.song-list-btn{
 			right:-1vw;
@@ -361,6 +456,16 @@
 			transform:rotate(360deg);
 		}
 	}
+	@keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(1turn);
+            transform: rotate(1turn);
+        }
+    }
 	/**
 	 * 在手机上软键盘弹出时,隐藏底部
 	 */

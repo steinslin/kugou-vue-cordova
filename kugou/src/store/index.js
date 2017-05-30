@@ -4,6 +4,9 @@ import Vuex from 'vuex'
 import skin from '../config/skin-config.js'
 import defaultSong from '../config/song-config.js'
 import {
+	Toast
+} from 'mint-ui';
+import {
 	formatTime,
 	timeToSecond,
 	formatTimeDouble
@@ -43,7 +46,7 @@ const store = new Vuex.Store({
 	},
 	getters: {
 		lyricArray: state => {
-			if (state.audio.lyrics.length == 0)
+			if (!state.audio.lyrics || state.audio.lyrics.length == 0)
 				return [];
 			let lyricArray = [];
 			let regTime = /\[\d*:\d*((\.|\:)\d*)*\]/g
@@ -69,18 +72,14 @@ const store = new Vuex.Store({
 				currentTime,
 				lyric_index
 			} = state;
-			if (lyricArray.length == 0 || currentTime == 0) {
+			console.log(lyricArray.length);
+			console.log(lyric_index);
+			if (lyricArray.length == 0) {
+				console.log('error');
 				return currentLyrics;
 			} else {
 				for (let i = lyric_index; i < lyricArray.length; i += 2) {
 					let lyricTime = timeToSecond(lyricArray[i].time);
-					// if (i == 0 && lyricTime >= currentTime) {
-					// 	state.lyric_index = i;
-					// 	return lyricArray[i].lyric;
-					// } else if (lyricTime >= currentTime) {
-					// 	state.lyric_index = i;
-					// 	return lyricArray[i - 1].lyric;
-					// }
 					if (i == 0 && lyricTime >= currentTime) {
 						state.lyric_index = i
 						currentLyrics.push({
@@ -129,9 +128,11 @@ const store = new Vuex.Store({
 			} = state;
 			for (let i = 0; i < playList.length; i++) {
 				if (playList[i].hash === audio.hash) {
+					localStorage.setItem('audioIndex', i)
 					return i;
 				}
 			}
+			localStorage.setItem('audioIndex', -1);
 			return -1;
 		}
 	},
@@ -183,6 +184,7 @@ const store = new Vuex.Store({
 			let rate_width = Math.min(Math.max(offsetLeft - btnWidth / 4, 0), width); //0-width
 			let audio = document.getElementById('audio');
 			audio.pause();
+			state.playing = false;
 			let currentTime = rate_width / width * audio.duration;
 			audio.currentTime = currentTime
 			state.currentTime = currentTime;
@@ -255,6 +257,8 @@ const store = new Vuex.Store({
 			} else {
 				state.playList.push(newaudio);
 			}
+			localStorage.setItem('playList', JSON.stringify(state.playList))
+
 		},
 		changePlayType(state, cb) {
 			let {
@@ -266,8 +270,183 @@ const store = new Vuex.Store({
 				if (val === playType) {
 					state.playType = playTypes[++index % playTypes.length];
 					typeof cb == 'function' && cb();
+					localStorage.setItem('playType', state.playType);
 					return;
 				}
+			})
+		},
+		clearPlayList(state) {
+			localStorage.removeItem('playList')
+			state.playList = [];
+			state.audio = {
+				play_url: '',
+				lyrics: '',
+				img: '',
+				author_name: '',
+				audio_name: '',
+				timelength: 0,
+			}
+		},
+		deletePlayItem(state, {
+			index,
+			audioIndex,
+			playing
+		}) {
+			state.playList.splice(index, 1);
+			console.log('playing:' + playing);
+			if (index === audioIndex) {
+				let {
+					playList,
+				} = state
+				if (playList.length > 0) {
+					state.audio = playList[Math.min(index, playList.length - 1)]
+					if (playing) {
+						console.log('playing');
+						Vue.nextTick(() => {
+							let audio = document.getElementById('audio');
+							audio.play();
+							state.play = true;
+							let timer = setInterval(() => {
+								if (audio.played.length == 0) {
+									audio.play()
+									state.play = true;
+								} else {
+									clearInterval(timer)
+								}
+							}, 300)
+						})
+					} else {
+						console.log('stoping')
+					}
+				} else {
+					state.playList = [];
+					state.audio = {
+						play_url: '',
+						lyrics: '',
+						img: '',
+						author_name: '',
+						audio_name: '',
+						timelength: 0,
+					}
+				}
+			}
+			localStorage.setItem('playList', JSON.stringify(state.playList))
+		},
+		createdGetAudio(state, cb) {
+			state.playList = JSON.parse(localStorage.getItem('playList')) || [];
+			console.log(state.playList);
+			let audioIndex = parseInt(localStorage.getItem('audioIndex'))
+			if (isNaN(audioIndex) || audioIndex === -1 || state.playList.length === 0) {
+				typeof cb == 'function' && cb();
+				return;
+			}
+			state.audio = state.playList[audioIndex];
+		},
+		changePlaySong(state, {
+			index,
+			audioIndex
+		}) {
+			//切换开关
+			if (index === audioIndex) {
+				let {
+					playing
+				} = state;
+				let audio = document.getElementById('audio');
+				if (playing) {
+					audio.pause();
+					state.playing = false
+				} else {
+					audio.play();
+					state.playing = true;
+				}
+			} else {
+				state.audio = state.playList[index];
+				state.lyric_index = 0;
+				Vue.nextTick(() => {
+					let audio = document.getElementById('audio');
+					audio.play();
+					state.playing = true;
+					let timer = setInterval(() => {
+						if (audio.played.length == 0) {
+							audio.play()
+							state.playing = true;
+						} else {
+							clearInterval(timer)
+						}
+					}, 300)
+				})
+			}
+		},
+		audioEnd(state, audioIndex) {
+			//'顺序播放', '随机播放', '单曲循环'
+			let {
+				playList,
+				playType
+			} = state;
+			state.lyric_index = 0;
+			if (playType === '单曲循环' || playList.length < 2) {
+				document.getElementById('audio').currentTime = 0;
+			} else if (playType === '顺序播放') {
+				let next = ++audioIndex % playList.length;
+				state.audio = playList[next];
+			} else if (playType === '随机播放') {
+				let next = audioIndex;
+				while (audioIndex === next) {
+					next = Math.floor(Math.random() * playList.length)
+				}
+				state.audio = playList[next]
+			}
+			Vue.nextTick(() => {
+				let audio = document.getElementById('audio');
+				audio.play();
+				state.playing = true;
+				let timer = setInterval(() => {
+					if (audio.played.length == 0) {
+						audio.play()
+						state.playing = true;
+					} else {
+						clearInterval(timer)
+					}
+				}, 300)
+			})
+		},
+		nextSong(state, audioIndex) {
+			//'顺序播放', '随机播放', '单曲循环'
+			let {
+				playList,
+				playType
+			} = state;
+			//少于2首时 直接返回
+			if (playList.length < 2) {
+				return;
+			}
+			state.lyric_index = 0;
+			if (playType === '顺序播放' || playType === '单曲循环') {
+
+				let next = ++audioIndex % playList.length;
+				console.log(audioIndex, playList.length, next)
+				state.audio = playList[next];
+			} else if (playType === '随机播放') {
+				let next = audioIndex;
+				while (audioIndex === next) {
+					next = Math.floor(Math.random() * playList.length)
+					console.log(next);
+				}
+
+				state.audio = playList[next]
+			}
+			Vue.nextTick(() => {
+				let audio = document.getElementById('audio');
+				audio.play();
+				state.playing = true;
+				let timer = setInterval(() => {
+					if (audio.played.length == 0) {
+						audio.play()
+						state.playing = true;
+					} else {
+						clearInterval(timer)
+					}
+				}, 300)
 			})
 		}
 	},
@@ -275,7 +454,8 @@ const store = new Vuex.Store({
 		getSong(state, {
 			hash,
 			album_id,
-			cb
+			cb,
+			flag = true
 		}) {
 			Vue.http.get(apis.getSong, {
 				params: {
@@ -289,7 +469,9 @@ const store = new Vuex.Store({
 				//加入到播放队列
 				state.commit('addInPlayList', res.body.data);
 				//修改播放音频
-				state.commit('setAudio', res.body.data);
+				if (flag) {
+					state.commit('setAudio', res.body.data);
+				}
 				typeof cb == 'function' && cb();
 			})
 		},

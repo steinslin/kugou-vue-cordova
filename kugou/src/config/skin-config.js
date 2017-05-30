@@ -1,7 +1,7 @@
 let commom_1 = '/res/drawable-xhdpi-v4';
 let commom_2 = '/res/drawable-xxhdpi-v4';
 let skin_config = {
-	selected: 0,
+	selected: 2,
 	skins: ['elk', 'christmaseve', 'starrysky', 'cute', ]
 }
 if (localStorage) {
@@ -69,6 +69,7 @@ let skin = {
 	game: `${dir}/skin_kg_navigation_game.png`,
 	generalize: `${dir}/skin_kg_navigation_spread.png`,
 	play_bg: `${dir}/skin_kg_playing_bar_right_bg.png`,
+	slider_btn: `static/img/ak8.png`,
 	singer_default_play_bg: `${dir}/skin_kg_playing_bar_default_avatar.png`,
 	controll_play_icons: {
 		icons: [`${dir}/skin_kg_ic_playing_bar_play_default.png`, `${dir}/skin_kg_ic_playing_bar_play_pressed.png`],
@@ -85,7 +86,13 @@ let skin = {
 	song_list_icons: {
 		icons: [`${dir}/skin_kg_ic_playing_bar_playlist_queue_default.png`, `${dir}/skin_kg_ic_playing_bar_playlist_queue_pressed.png`],
 		selected: 0
-	}
+	},
+	share: 'static/img/apm.png',
+	newlist: 'static/img/ap3.png',
+	cycle: 'static/img/ap9.png',
+	random: 'static/img/apb.png',
+	singlecycle: 'static/img/ape.png',
+	remove: 'static/img/apf.png',
 }
 
 module.exports = skin;
