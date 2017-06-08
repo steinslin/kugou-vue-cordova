@@ -21,7 +21,7 @@ npm run dev
 node proxy.js && npm run android
 ```
 
-###部分截图
+### 部分截图
 
 ![](https://github.com/linrui1994/kugou-vue-cordova/blob/master/screenshot/1.jpg)
 
