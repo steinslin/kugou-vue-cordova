@@ -17,6 +17,12 @@ npm install
 # 在浏览器中预览 请使用chrome切换成手机模式
 npm run dev
 
-# 在手机预览 手机连接电脑usb 开启usb调试 连接电脑wifi
+# 在手机预览 请先安装cordova 手机连接电脑usb 开启usb调试 连接电脑wifi
 node proxy.js && npm run android
 ```
+
+###部分截图
+
+![](https://github.com/linrui1994/kugou-vue-cordova/screenshot/1.jpg)
+
+![](https://github.com/linrui1994/kugou-vue-cordova/screenshot/2.jpg)
