@@ -40,6 +40,6 @@ app.get('/api/searchSong', function(req, res) {
     })
 })
 
-app.listen(3000, '172.30.67.162', function() {
+app.listen(3000, 'localhost', function() {
     console.log('proxy server listening at port:3000')
 });
