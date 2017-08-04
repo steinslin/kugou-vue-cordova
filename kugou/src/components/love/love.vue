@@ -1,28 +1,21 @@
 <template>
-	<div class='view wholepage con bg z2'  :style="{backgroundImage: bg}">
-		<div class='header-con'>
-			<v-touch class='iconfont icon-left' tag='i' v-ripple v-back></v-touch>	
-		</div>	
-	</div>
+  <div class='view wholepage con bg z2'  :style="{backgroundImage: `url(${skin.bg})`}">
+    <div class='header-con'>
+      <v-touch class='iconfont icon-left' tag='i' v-ripple v-back></v-touch>  
+    </div>  
+  </div>
 </template>
 
-<script type='es6'>
-import {
-    bg
-} from '../../config/skin-config.js'
+<script>
+import {mapState} from 'vuex'
 export default {
-	name:'search',
-	data(){
-		return{
-			bg: `url(${bg})`
-		}
-	},
-	components:{
-		
-	}
+  name: 'search',
+  data () {
+    return {
+    }
+  },
+  computed: {
+    ...mapState(['skin'])
+  }
 }
 </script>
-
-<style lang='scss' scoped>
-
-</style>

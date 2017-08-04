@@ -1,10 +1,10 @@
 <!-- 和swipe-view.vue一起使用 -->
 <!-- lv-swipe-item 必须传递loaded参数 必须绑定ref 格式是item+index
-			 可选参数loadingImg 可选参数loadingText 可选参数loadingFunction-->
+       可选参数loadingImg 可选参数loadingText 可选参数loadingFunction-->
 <template>
-	<div class='con'>
-		<div v-if='visited && !loaded' class='loading'>
-			<!-- <div class="ant-spin ant-spin-spinning">
+  <div class='con'>
+    <div v-if='visited && !loaded' class='loading'>
+      <!-- <div class="ant-spin ant-spin-spinning">
                 <span class="ant-spin-dot">
                     <i></i>
                     <i></i>
@@ -13,85 +13,85 @@
                 </span>
             </div> -->
             <div id='loadingBox' v-animate></div>
-			<span class='text light_color_2'>{{loadingText}}</span>
-		</div>
-		<div v-if='loaded && visited'>
-			<slot></slot>
-		</div>
-	</div>
+      <span class='text light_color_2'>{{loadingText}}</span>
+    </div>
+    <div v-if='loaded && visited'>
+      <slot></slot>
+    </div>
+  </div>
 </template>
 
-<script type='es6'>
+<script>
 export default{
-	props:{
-		/*
-		是否加载完成的标志  必须传递  不然一直显示loading
-		 */
-		loaded:{
-			type:Boolean,
-			default:false
-		},
-		loadingImg:{
-			type:String,
-			default:'static/gears.svg'
-		},
-		loadingText:{
-			type:String,
-			default:'Loading...'
-		},
-		loadingFunction:{
-			type:Function,
-			default:null
-		}
-	},
-	data(){
-		return{
-			visited:false //是否已经拜访过 
-		}
-	},
-    directives:{
-        animate:{
-            bind(el,binding,vnode){
-                let arr=[
-                    'static/loading2/afg.png',
-                    'static/loading2/afh.png',
-                    'static/loading2/afi.png',
-                    'static/loading2/afj.png',
-                    'static/loading2/afk.png',
-                    'static/loading2/afl.png',
-                    'static/loading2/afm.png',
-                    'static/loading2/afn.png',
-                ];
-
-                let index=0;
-                let img=document.createElement('img');
-                img.id='loadingImg'
-                img.src=arr[0]
-                img.style.width='15vw'
-                el.appendChild(img)
-                let timer=setInterval(()=>{
-                    if(vnode.context.loaded){                     
-                        clearInterval(timer)
-                    }else{
-                        index=++index%arr.length;                     
-                        el.children[0].src=arr[index]                     
-                    }
-                },180)
-            }
-        }
+  props: {
+    /*
+    是否加载完成的标志  必须传递  不然一直显示loading
+     */
+    loaded: {
+      type: Boolean,
+      default: false
     },
-	methods:{
-		updateStatus(){
-			this.visited=true			
-		},
-	},
-	watch:{
-		visited(newval,oldval){
-			if(!oldval && typeof this.loadingFunction=='function'){
-				this.loadingFunction();
-			}
-		}
-	}
+    loadingImg: {
+      type: String,
+      default: 'static/gears.svg'
+    },
+    loadingText: {
+      type: String,
+      default: 'Loading...'
+    },
+    loadingFunction: {
+      type: Function,
+      default: null
+    }
+  },
+  data () {
+    return {
+      visited: false // 是否已经拜访过
+    }
+  },
+  directives: {
+    animate: {
+      bind (el, binding, vnode) {
+        let arr = [
+          'static/loading2/afg.png',
+          'static/loading2/afh.png',
+          'static/loading2/afi.png',
+          'static/loading2/afj.png',
+          'static/loading2/afk.png',
+          'static/loading2/afl.png',
+          'static/loading2/afm.png',
+          'static/loading2/afn.png',
+        ]
+
+        let index = 0
+        let img = document.createElement('img')
+        img.id = 'loadingImg'
+        img.src = arr[0]
+        img.style.width = '15vw'
+        el.appendChild(img)
+        let timer = setInterval(() => {
+          if (vnode.context.loaded) {
+            clearInterval(timer)
+          } else {
+            index = ++index % arr.length
+            el.children[0].src = arr[index]
+          }
+        }, 180)
+      }
+    }
+  },
+  methods: {
+    updateStatus () {
+      this.visited = true
+    },
+  },
+  watch: {
+    visited (newval, oldval) {
+      if (!oldval && typeof this.loadingFunction === 'function') {
+        this.loadingFunction()
+      }
+    }
+  }
 }
 </script>
 
@@ -99,28 +99,28 @@ export default{
 $img_width:50px;
 $font_size:4vw;
 .con{
-	height: 100%;
-	width: 100%;
-	overflow-y: auto;
-	position: relative;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  position: relative;
 }
 
 .loading{
-	position: absolute;
+  position: absolute;
     display: inline-block;
-	top:0;
-	bottom:0;
-	right: 0;
+  top:0;
+  bottom:0;
+  right: 0;
     height:90px;
     width:100px;
-	left:0;
-	font-size: $font_size;
-	margin: auto;
+  left:0;
+  font-size: $font_size;
+  margin: auto;
     text-align: center;
 }
 
 .text{
-	display: block;
+  display: block;
     text-align: center;
     margin-top:0.3rem;
 }

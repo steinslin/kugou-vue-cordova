@@ -2,6 +2,7 @@ var http = require('http');
 var express = require('express');
 var app = express();
 var request = require('request');
+var cfg = require('./src/config/server.js')
 const apis = {
     getSong: 'http://www.kugou.com/yy/index.php?r=play/getdata',
     searchSong: 'http://songsearch.kugou.com/song_search_v2?',
@@ -40,6 +41,6 @@ app.get('/api/searchSong', function(req, res) {
     })
 })
 
-app.listen(3000, 'localhost', function() {
-    console.log('proxy server listening at port:3000')
+app.listen(cfg.port, cfg.host, function() {
+    console.log(`proxy server listening at ${cfg.host}:${cfg.port}`)
 });

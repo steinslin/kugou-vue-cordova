@@ -12,22 +12,20 @@ import ripple from './directives/ripple'
 import rippleBtn from './directives/ripple-btn'
 import vBack from './directives/v-router-back'
 import vTap from './directives/v-tap'
-import {
-	Toast,
-	MessageBox
-} from 'mint-ui'
+import Toast from './components/lib/toast.js'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import FastClick from 'fastclick'
 Vue.use(MintUI)
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 Vue.use(VueTouch, {
-	name: 'v-touch'
+  name: 'v-touch'
 })
 Vue.prototype.$toast = Toast
-Vue.prototype.$message = MessageBox;
+
 VueTouch.config.press = {
-	time: 5
+  time: 5
 }
 Vue.directive('ripple', ripple)
 
@@ -37,16 +35,17 @@ Vue.directive('back', vBack)
 
 Vue.directive('tap', vTap)
 
-
 Vue.use(store)
+
+FastClick.attach(document.body)
 
 /* eslint-disable no-new */
 new Vue({
-	el: '#app',
-	router,
-	store,
-	template: '<App/>',
-	components: {
-		App
-	}
+  el: '#app',
+  router,
+  store,
+  template: '<App/>',
+  components: {
+    App
+  }
 })

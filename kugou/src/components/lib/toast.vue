@@ -1,15 +1,14 @@
 <template>
-  <transition name="mint-toast-pop">
-    <div class="mint-toast" v-show="visible" :class="customClass" :style="{ 'padding': iconClass === '' ? '10px' : '20px' }">
-      <i class="mint-toast-icon" :class="iconClass" v-if="iconClass !== ''"></i>
-      <span class="mint-toast-text" :style="{ 'padding-top': iconClass === '' ? '0' : '10px' }">{{ message }}</span>
+  <transition name="lv-toast-pop">
+    <div class="lv-toast" v-show="visible" :class="customClass" :style="{ 'padding': iconClass === '' ? '10px' : '20px' }">
+      <i class="lv-toast-icon" :class="iconClass" v-if="iconClass !== ''"></i>
+      <span class="lv-toast-text" :style="{ 'padding-top': iconClass === '' ? '0' : '10px' }">{{ message }}</span>
     </div>
   </transition>
 </template>
 
-<style>
-  @component-namespace mint {
-    @component toast {
+<style scoped>
+    .lv-toast {
       position: fixed;
       max-width: 80%;
       border-radius: 5px;
@@ -19,42 +18,41 @@
       text-align: center;
       z-index: 1000;
       transition: opacity .3s linear;
-  
-      @descendent icon {
+    }
+      .lv-toast-icon {
         display: block;
         text-align: center;
         font-size: 56px;
       }
       
-      @descendent text {
+      .lv-toast-text {
         font-size: 14px;
         display: block;
         text-align: center;
       }
       
-      @when placetop {
+      .lv-toast-placetop {
         top: 50px;
         left: 50%;
         transform: translate(-50%, 0);
       }
       
-      @when placemiddle {
+      .lv-toast-placemiddle {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
       }
       
-      @when placebottom {
+      .lv-toast-placebottom {
         bottom: 50px;
         left: 50%;
         transform: translate(-50%, 0);
       }
       
-      @descendent pop-enter, pop-leave-active {
+      .lv-toast-pop-enter, .lv-toast-pop-leave-active {
         opacity: 0;
       }
-    }
-  }
+
 </style>
 
 <script type="text/babel">
@@ -75,29 +73,29 @@
       }
     },
 
-    data() {
+    data () {
       return {
         visible: false
-      };
+      }
     },
 
     computed: {
-      customClass() {
-        var classes = [];
+      customClass () {
+        var classes = []
         switch (this.position) {
           case 'top':
-            classes.push('is-placetop');
-            break;
+            classes.push('lv-toast-placetop')
+            break
           case 'bottom':
-            classes.push('is-placebottom');
-            break;
+            classes.push('lv-toast-placebottom')
+            break
           default:
-            classes.push('is-placemiddle');
+            classes.push('lv-toast-placemiddle')
         }
-        classes.push(this.className);
+        classes.push(this.className)
 
-        return classes.join(' ');
+        return classes.join(' ')
       }
     }
-  };
+  }
 </script>

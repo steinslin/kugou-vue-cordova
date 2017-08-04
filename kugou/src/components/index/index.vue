@@ -1,22 +1,36 @@
 <template>
-	<div class='view wholepage con bg z1'  :style="{backgroundImage: bg}">
-	<!-- 	<index-header></index-header> -->
-		<index-content></index-content>
-	</div>
+  <div>
+    <transition-group enter-active-class='animated' leave-active-class='animated'>
+      <v-touch tag='div' class='view wholepage con bg z1' key='1' :style="{backgroundImage: `url(${skin.bg})`}" @swiperight='openSideBar' @swipeleft='closeSideBar' >
+        <index-content @openSideBar='openSideBar'></index-content>
+      </v-touch>
+      <side-bar :left.sync='sideBarLeft' key='1' @closeSideBar='closeSideBar'></side-bar>
+    </transition-group>
+  </div>
 </template>
-<script type="es6">
-	import indexHeader from './header'
-	import indexContent from './content'
-	import {
-    indexBg,bg
-} from '../../config/skin-config.js'
-	export default {
-		name:'index',
-		data(){
-			return{
-				bg: `url(${bg}) `,
-			}
-		},
-		components:{indexHeader,indexContent}
-	}
+<script>
+  import indexContent from './content'
+  import sideBar from './sideBar'
+  import {mapState} from 'vuex'
+  export default {
+    props: ['sideBarLeft'],
+    name: 'index',
+    components: {indexContent, sideBar},
+    computed: {
+      ...mapState(['skin'])
+    },
+    data () {
+      return {}
+    },
+    methods: {
+      openSideBar () {
+        console.log(1)
+        this.$emit('update:sideBarLeft', 0)
+      },
+      closeSideBar () {
+        console.log(2)
+        this.$emit('update:sideBarLeft', -80)
+      }
+    }
+  }
 </script>

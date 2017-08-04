@@ -1,8 +1,12 @@
-const server = 'http://172.30.67.162:3000';
+// const server = 'http://localhost:3000';
+const host = 'localhost'
+const port = 3000
 const config = {
-	apis: {
-		getSong: `${server}/api/getSong`,
-		searchSong: `${server}/api/searchSong`
-	}
+  apis: {
+    getSong: `http://${host}:${port}/api/getSong`,
+    searchSong: `http://${host}:${port}/api/searchSong`
+  },
+  host,
+  port
 }
 module.exports = config

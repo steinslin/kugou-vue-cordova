@@ -1,53 +1,48 @@
 <template>
-    <div id="app" class='bg wholepage _fixed'>
-        <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
-            <router-view></router-view>
-        </transition>
-        <play-list ref='playList'></play-list>
-        <footer-play-bar></footer-play-bar>
-    </div>
+  <div id="app" class='bg wholepage _fixed' :style='{left: sideBarLeft + 80 + "vw"}' key='1' style='transition:left .5s'>
+    <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
+      <router-view :sideBarLeft.sync='sideBarLeft'></router-view>
+    </transition>
+    <play-list ref='playList' key='1'></play-list>
+    <footer-play-bar key='1'></footer-play-bar>
+  </div>
 </template>
 <script>
-import footerPlayBar from './components/footer';
+import footerPlayBar from './components/footer'
 import playList from './components/play-list'
-import {
-    bg
-} from './config/skin-config.js'
-(function(doc, win) {
-    let docEl = doc.documentElement;
-    let clientHeight = docEl.clientHeight;
-    docEl.style.fontSize = clientHeight / 100 * 4 + 'px';
-    // let style=doc.createElement('style');
-    // style.innerHTML='.bg{height:'+clientHeight+'px}'
-    // doc.head.appendChild(style);
+import sideBar from './components/index/sideBar.vue'
+(function (doc, win) {
+  let docEl = doc.documentElement
+  let clientHeight = docEl.clientHeight
+  docEl.style.fontSize = clientHeight / 100 * 4 + 'px'
 })(document, window)
 export default {
-    name: 'app',
-    data() {
-        return {
-            bg: `url(${bg})`,
-            leaveActiveClass:'',
-            enterActiveClass:''
-        }
-    },
-    components: {
-        footerPlayBar,
-        playList
-    },
-    watch: {
-        '$route' (to, from) {
-            const toDepth = to.path.split('/').length
-            const fromDepth = from.path.split('/').length
-        //    this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-            if(toDepth>fromDepth){
-                this.enterActiveClass='animated slideIn animated-in';
-                this.leaveActiveClass='animated thirdSildeOut animated-in'
-            }else{
-                this.enterActiveClass='animated thirdSildeIn animated-in';
-                this.leaveActiveClass='animated slideOut animated-in'
-            }
-        }
+  name: 'app',
+  data () {
+    return {
+      sideBarLeft: -80,
+      leaveActiveClass: '',
+      enterActiveClass: ''
     }
+  },
+  components: {
+    footerPlayBar,
+    playList,
+    sideBar
+  },
+  watch: {
+    '$route' (to, from) {
+      const toDepth = to.path.split('/').length
+      const fromDepth = from.path.split('/').length
+      if (toDepth > fromDepth) {
+        this.enterActiveClass = 'animated slideIn animated-in'
+        this.leaveActiveClass = 'animated thirdSildeOut animated-in'
+      } else {
+        this.enterActiveClass = 'animated thirdSildeIn animated-in'
+        this.leaveActiveClass = 'animated slideOut animated-in'
+      }
+    }
+  }
 }
 </script>
 <style lang='scss'>
@@ -183,10 +178,11 @@ body .mint-msgbox-content{
 }
 
 .bg {
-    box-sizing: border-box;
-    width: 100vw;
-    height: 25rem;
-    background-size: cover;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 25rem;
+  background-size: cover;
+  background-color: rgba(0,0,0,.3);
 }
 
 .light_color_2 {
@@ -360,6 +356,14 @@ textarea:-ms-input-placeholder {
     }
 }
 
+@keyframes fadeOpacityOut {
+    from {
+        opacity: 1
+    }
+    to {
+        opacity: 0
+    }
+}
 .slideIn{
     -webkit-animation-name: slideIn;
     animation-name: slideIn;
@@ -378,5 +382,8 @@ textarea:-ms-input-placeholder {
 .thirdSildeIn{
     -webkit-animation-name: AutoFileName;
     animation-name: thirdSildeIn;
+}
+.fadeOpacityOut{
+    animation-name: fadeOpacityOut
 }
 </style>
