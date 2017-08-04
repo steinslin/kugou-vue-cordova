@@ -4,11 +4,11 @@
       <div class='con-left-lyric _relative'>
         <transition-group leave-active-class='fadeOpacityOut animated'>
           <div class='lyric' v-if='currentLyrics.length>0 && left == 0' key='1' :style='{left:lyric_left}'>{{currentLyrics[0].lyric}}
-            <div class='lyric highlight' :style='{width:lyricHighlightWidth}' v-if='currentLyrics.length>0'>{{currentLyrics[0].lyric}}</div>
+            <div class='lyric highlight' :style='{width:lyricHighlightWidth}' :class='{"highlight-noanimation" : leftLyricNoHighlight}' v-if='currentLyrics.length>0'>{{currentLyrics[0].lyric}}</div>
           </div>
           <br key='2'/>
           <div class='lyric-next' key='3' v-if='currentLyrics.length>1 && left == 0' :style='{right:lyric_next_right}'>{{currentLyrics[1].lyric}}
-            <div class='lyric-next highlight' :style='{width:lyricNextHighlightWidth}' v-if='currentLyrics.length>1'>{{currentLyrics[1].lyric}}</div>
+            <div class='lyric-next highlight' :style='{width:lyricNextHighlightWidth}' :class='{"highlight-noanimation" : parseFloat(lyricNextHighlightWidth) === 0}' v-if='currentLyrics.length>1'>{{currentLyrics[1].lyric}}</div>
           </div>
         </transition-group>
       </div>
@@ -34,15 +34,15 @@
               <div class="lv-spin-icon"></div>
             </div>
           </div>
-          <v-touch class='controll-btn' >
-            <v-touch tag='img' v-if='playing' :src="controll_stop_icons.icons[controll_stop_icons.selected]" @touchstart='press("controll_stop_icons")' @touchend='pressup("controll_stop_icons")'  @tap='stop()' ></v-touch>
+          <v-touch class='controll-btn' v-ripple>
+            <v-touch tag='img' v-if='playing' :src="skin.controll_stop_icons.icons[skin.controll_stop_icons.selected]" @touchstart='press("controll_stop_icons")' @touchend='pressup("controll_stop_icons")'  @tap='stop' ></v-touch>
             <v-touch tag='img' v-else :src="skin.controll_play_icons.icons[skin.controll_play_icons.selected]" @touchstart='press("controll_play_icons")' @touchend='pressup("controll_play_icons")'  @tap='play' ></v-touch>
           </v-touch>
-          <v-touch class='next-btn' >
+          <v-touch class='next-btn' v-ripple>
             <v-touch tag='img' :src='skin.next_icons.icons[skin.next_icons.selected]' @touchstart='press("next_icons")' @touchend='pressup("next_icons")' @tap='nextSong'>
             </v-touch>
           </v-touch>
-          <v-touch class='song-list-btn' @tap='togglePlayList'>
+          <v-touch class='song-list-btn' @tap='togglePlayList' v-ripple>
             <img :src='skin.song_list_icons.icons[skin.song_list_icons.selected]' @touchstart='press("song_list_icons")' @touchend='pressup("song_list_icons")' @tap='showSongList()'/>
           </v-touch>
         </div>
@@ -68,7 +68,8 @@ export default {
       paning: false,
       panendToPlay: false,
       audioLoading: false,
-      showLyric: false
+      showLyric: false,
+      leftLyricNoHighlight: true
     }
   },
   computed: {
@@ -92,6 +93,11 @@ export default {
         return '0%'
       }
       let lyricStartTime = timeToSecond(lyricArray[currentLyrics[0].index].time)
+      if (Math.abs(lyricStartTime - currentTime) < 0.5) {
+        this.leftLyricNoHighlight = true
+      } else {
+        this.leftLyricNoHighlight = false
+      }
       let lyricEndTime = timeToSecond(lyricArray[currentLyrics[0].index + 1].time)
       return `${Math.min(Math.max(currentTime - lyricStartTime, 0) / (lyricEndTime - lyricStartTime) * 100, 100)}%`
     },
@@ -178,6 +184,10 @@ export default {
     readyListen: {
       bind (el, bindings, vnode) {
         el.onended = () => vnode.context.$store.commit('audioEnd', vnode.context.audioIndex)
+        el.onerror = (error) => {
+          console.log(error)
+          vnode.context.nextSong()
+        }
       },
       componentUpdated (el, bindings, vnode) {
         vnode.context.audioLoading = el.readyState !== 4 && bindings.value
@@ -335,8 +345,11 @@ export default {
       transition: width 0.3s linear;
       color:$highlight_color;
       white-space:nowrap;
-        overflow:hidden;
-        margin-top:0;
+      overflow:hidden;
+      margin-top:0;
+    }
+    .highlight-noanimation{
+      transition: width 0s linear;
     }
   }
   .lyricBox{

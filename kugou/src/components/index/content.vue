@@ -44,7 +44,7 @@
         </div>
         <div class='underline' :style='{"border-bottom-width":ul_close?"1px":"0px",transition:ul_close?"all 0.4s":"0s"}'>
           <span>工具</span>
-          <i class='iconfont icon-down _right' :style='{transform:ul_close?"translateY(1.12vh) rotate(0deg)":"translateY(1.12vh) rotate(180deg)"}'></i>
+          <i class='iconfont icon-down _right' :style='{transform:ul_close?"translateY(0.5vh) rotate(0deg)":"translateY(1.12vh) rotate(180deg)"}'></i>
         </div>
       </v-touch>
       <ul id='action-nav' :class='{close:ul_close,open:!ul_close}'>

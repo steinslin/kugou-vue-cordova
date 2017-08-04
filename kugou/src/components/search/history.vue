@@ -8,7 +8,7 @@
     <div class="lv-container header lv-bottom-border" v-if='hotList && hotList.length>0'>
       <div class='lv-container lv-primary-color-light'>热门搜索</div>
       <ul class='lv-container lv-mg-minus-bottom-medium lv-mg-minus-right-medium'>
-        <v-touch v-for='item in hotList' :key='index' v-ripple-btn class="lv-container-circle" tag='li' @tap='searchSong($event,item)'>{{item}}</v-touch>     
+        <v-touch v-for='(item, index) in hotList' :key='index' v-ripple-btn class="lv-container-circle" tag='li' @tap='searchSong($event,item)'>{{item}}</v-touch>     
       </ul>
     </div>
     <ul v-if='historyList && historyList.length>0' class='lv-bottom-border'>
