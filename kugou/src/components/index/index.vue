@@ -1,11 +1,9 @@
 <template>
   <div>
-    <transition-group enter-active-class='animated' leave-active-class='animated'>
-      <v-touch tag='div' class='view wholepage con bg z1' key='1' :style="{backgroundImage: `url(${skin.bg})`}" @swiperight='openSideBar' @swipeleft='closeSideBar' >
-        <index-content @openSideBar='openSideBar'></index-content>
-      </v-touch>
-      <side-bar :left.sync='sideBarLeft' key='1' @closeSideBar='closeSideBar'></side-bar>
-    </transition-group>
+    <v-touch tag='div' class='view wholepage con bg z1' key='1' :style="{backgroundImage: `url(${skin.bg})`}" @swiperight='openSideBar' @swipeleft='closeSideBar' >
+      <index-content @openSideBar='openSideBar'></index-content>
+    </v-touch>
+    <side-bar :left.sync='sideBarLeft' key='1' @closeSideBar='closeSideBar'></side-bar>
   </div>
 </template>
 <script>
@@ -29,7 +27,7 @@
       },
       closeSideBar () {
         console.log(2)
-        this.$emit('update:sideBarLeft', -80)
+        this.$emit('update:sideBarLeft', -88)
       }
     }
   }

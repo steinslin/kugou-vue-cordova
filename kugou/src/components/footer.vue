@@ -186,7 +186,12 @@ export default {
         el.onended = () => vnode.context.$store.commit('audioEnd', vnode.context.audioIndex)
         el.onerror = (error) => {
           console.log(error)
-          vnode.context.nextSong()
+          vnode.context.$toast({
+            message: el.error.message + '播放出错，自动为您播放下一首'
+          })
+          setTimeout(() => {
+            vnode.context.nextSong()
+          }, 500)
         }
       },
       componentUpdated (el, bindings, vnode) {

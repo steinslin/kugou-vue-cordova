@@ -18,8 +18,10 @@ export default{
     currentValue: {
       get () {
         return this.value
+      },
+      set (val) {
+        this.$emit('input', val)
       }
-
     }
   }
 }
@@ -27,51 +29,56 @@ export default{
 
 <style scoped lang='scss'>
 $switchOnColor:#26a2ff;
-$switchOffColor:#fdfdfd;
-$switchColor:#d9d9d9;
+$switchOffColor:rgba(0,0,0,0); //#fdfdfd
+$switchColor:rgba(0,0,0,0); // #d9d9d9
+$switchBorderColor: #49B6C3;
 .switch{
+  display: flex;
+  * {
+    pointer-events: none;
+  }
   display:flex;
   input{
     display: none;
     &:checked+span{
       background: $switchOnColor;
-      border-color: $switchOnColor;
+      border-color: $switchBorderColor;
       &::before{
         transform:scale(0);
       }
       &::after{
-        transform: translateX(20px);
+        transform: translateX(0.9rem);
       }
     }
     &+span{
       display: inline-block;
-        position: relative;
-        width: 52px;
-        height: 32px;
-        border: 1px solid $switchColor;
-        border-radius: 16px;
-        box-sizing: border-box;
-        background: $switchColor;
-        &::before,&::after{
-        box-sizing:border-box;
-        content: " ";
-          top: 0;
-          left: 0;
-          position: absolute;
-          transition: transform .3s;
-          border-radius: 15px;
-        }
-        &::before{
-          width: 50px;
-        height: 30px;
+      position: relative;
+      width: 2rem;
+      height: 1.2rem;
+      border: 1px solid $switchBorderColor;
+      border-radius: 1rem;
+      box-sizing: border-box;
+      background: $switchColor;
+      &::before,&::after{
+      box-sizing:border-box;
+      content: " ";
+        top: 0;
+        left: 0;
+        position: absolute;
+        transition: transform .3s;
+        border-radius: 1rem;
+      }
+      &::before{
+        width: 1.9rem;
+        height: 1.14rem;
         background-color: $switchOffColor;
-        }
-        &::after{
-          width: 30px;
-          height: 30px;
-          background-color: #fff;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
-        }
+      }
+      &::after{
+        width: 1.14rem;
+        height: 1.14rem;
+        background-color: rgba(255,255,255,.8);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+      }
     }
   }
 }

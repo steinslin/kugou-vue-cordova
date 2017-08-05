@@ -1,10 +1,10 @@
 <template>
-  <div id="app" class='bg wholepage _fixed' :style='{left: sideBarLeft + 80 + "vw"}' key='1' style='transition:left .5s'>
+  <div id="app" class='bg wholepage _fixed' :style='{left: (sideBarLeft + 88) * 0.33 + "vw"}' style='transition:left .5s'>
     <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
       <router-view :sideBarLeft.sync='sideBarLeft'></router-view>
     </transition>
-    <play-list ref='playList' key='1'></play-list>
-    <footer-play-bar key='1'></footer-play-bar>
+    <play-list ref='playList'></play-list>
+    <footer-play-bar></footer-play-bar>
   </div>
 </template>
 <script>
@@ -20,7 +20,7 @@ export default {
   name: 'app',
   data () {
     return {
-      sideBarLeft: -80,
+      sideBarLeft: -88,
       leaveActiveClass: '',
       enterActiveClass: ''
     }
@@ -98,12 +98,26 @@ body .mint-msgbox{
     background-color: transparent;
 }
 body button.mint-msgbox-cancel{
+  color:$color_primary;
+  &:active{
+      background-color:transparent;
+      color:color_primary;
+  }
+  position: relative;
+  &:before{
+    z-index:-1;
+    content: "";
+    display: block;
+    position:absolute;
+    width: 200%;
+    left:0;
+    top:0;
+    transform-origin: 0 0;
+    height: 200%;
     border-right: 1px solid $border-color;
-    color:$color_primary;
-    &:active{
-        background-color:transparent;
-        color:color_primary;
-    }
+    transform: scale(.5);
+  }
+  border-right: 0px solid $border-color;
 }
 body button.mint-msgbox-confirm{
     &:active{
@@ -111,7 +125,21 @@ body button.mint-msgbox-confirm{
     }
 }
 body .mint-msgbox-content{
+  position: relative;
+  &:before{
+    z-index:-1;
+    content: "";
+    display: block;
+    position:absolute;
+    width: 200%;
+    left:0;
+    top:0;
+    transform-origin: 0 0;
+    height: 200%;
     border-bottom: 1px solid $border-color;
+    transform: scale(.5);
+  }
+  border-bottom: 0px solid $border-color;
 }
 .animated.animated-in {
     animation-duration: .5s;
@@ -224,11 +252,11 @@ input {
     position: fixed;
 }
 
-.ripple-container {
-  
-}
-
 .ripple {
+    background-color: rgba(255, 255, 255, 0.4);
+    animation: ripple 1.8s forwards cubic-bezier(0, 0, 0.2, 1);
+}
+.ripple-circle {
     background-color: rgba(255, 255, 255, 0.4);
     animation: ripple .8s forwards cubic-bezier(0, 0, 0.2, 1);
 }

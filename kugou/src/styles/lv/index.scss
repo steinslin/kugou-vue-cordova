@@ -110,6 +110,9 @@ body{
     &-align-center{
         text-align:center;
     }
+    &-align-right{
+        text-align: right;
+    }
     @each $side in $sides {
         @each $ds,$distance in $distances{
             @each $size,$space-size in $space-sizes{
@@ -160,5 +163,14 @@ body{
         text-overflow: ellipsis;
         overflow:hidden;
         white-space: nowrap;
+    }
+    &-float-left{
+        float:left;
+    }
+    &-float-right{
+        float: right;
+    }
+    &-with-transition{
+        transition: all .5s;
     }
 }

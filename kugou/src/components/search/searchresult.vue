@@ -8,12 +8,12 @@
         <lv-loadmore :refresh='songRefresh' :loadmore='songLoadmore'
          ref='songLoadmore' :bottom-all-loaded='allLoaded'> 
           <ul class='songlist' slot='data'>
-            <li class='song' v-for='(item,index) in searchSongs'>
+            <li class='song' v-for='(item,index) in searchSongs' v-ripple-btn='"ripple"'>
               <div class='con-left'>
                 <i class='iconfont icon-add primary_color' @click.stop='addInPlayList(item)'></i>
               </div>
               <div class='con-mid'>
-                <v-touch class='songNameItem' @tap='getSong(item)' v-ripple-btn='"ripple"'>
+                <v-touch class='songNameItem' @tap='getSong(item)'>
                   <div class='light_color_2 songName'>{{item.SongName}}</div>
                   <div class='light_color small singerName'>{{item.SingerName}}</div>
                   
@@ -181,14 +181,17 @@ export default {
   }
 }
 .songlist{
+  margin-top: -2px;
   .song{
     height: 2rem;
     box-sizing: border-box;
-    padding-left: 3.5vw;
     width: 100%;
     display: flex;
     &:nth-last-child(1) .con-mid:before{
       border:none;
+    }
+    .con-left{
+      padding-left: 3.5vw;
     }
   }
   .songName{

@@ -74,7 +74,7 @@ export default{
       this.$message.confirm('确定清空播放列表?').then(action => this.$store.commit('clearPlayList')).catch(cancle => {})
       Vue.nextTick(() => {
         let el = document.querySelector('.mint-msgbox')
-        el.style.backgroundImage = `url(${this.dialogBg})`
+        el.style.backgroundImage = `url(${this.skin.dialogBg})`
         el.style.backgroundSize = 'cover'
       })
     },
@@ -139,19 +139,19 @@ ul{
   }
   .iconbox{
     position: relative;
-        &:before{
-            z-index:-1;
-            content: "";
-            display: block;
-            position:absolute;
-            width: 200%;
-            left:0;
-            top:0;
-            transform-origin: 0 0;
-            height: 200%;
-            border-right: 1px solid $dark-border-color;
-            transform: scale(.5);
-        }
+    &:before{
+      z-index:-1;
+      content: "";
+      display: block;
+      position:absolute;
+      width: 200%;
+      left:0;
+      top:0;
+      transform-origin: 0 0;
+      height: 200%;
+      border-right: 1px solid $dark-border-color;
+      transform: scale(.5);
+    }
   }
   .icon,.custom .icon-2{
     width:0.72rem;

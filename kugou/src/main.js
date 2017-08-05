@@ -13,11 +13,14 @@ import rippleBtn from './directives/ripple-btn'
 import vBack from './directives/v-router-back'
 import vTap from './directives/v-tap'
 import Toast from './components/lib/toast.js'
-import MintUI from 'mint-ui'
+import MintUI, {MessageBox} from 'mint-ui'
 import 'mint-ui/lib/style.css'
+
 import FastClick from 'fastclick'
 Vue.use(MintUI)
 Vue.config.productionTip = false
+
+Vue.prototype.$message = MessageBox
 
 Vue.use(VueTouch, {
   name: 'v-touch'

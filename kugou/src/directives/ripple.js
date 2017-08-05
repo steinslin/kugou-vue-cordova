@@ -31,10 +31,10 @@ RippleEffect.prototype = {
     var y = event.pageY || event.touches[0].pageY
     ripple.style.left = ((x - offsetInfo.left) - circleD / 2) + 'px'
     ripple.style.top = ((y - offsetInfo.top) - circleD / 2) + 'px'
-    ripple.className = 'ripple'
+    ripple.className = 'ripple-circle'
     this.element.appendChild(ripple)
     ripple.addEventListener('animationend', function () {
-      let rippler = this.element.querySelector('.ripple')
+      let rippler = this.element.querySelector('.ripple-circle')
       if (rippler) {
         rippler.remove()
       }
