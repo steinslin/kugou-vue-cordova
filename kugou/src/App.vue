@@ -1,10 +1,12 @@
-<template>
-  <div id="app" class='bg wholepage _fixed' :style='{left: (sideBarLeft + 88) * 0.33 + "vw"}' style='transition:left .5s'>
+<template> <!-- :style='{left: (sideBarLeft + 88) * 0.33 + "vw"}' -->
+  <div id="app" class='bg wholepage _fixed' style='transition:left .5s'>
     <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
-      <router-view :sideBarLeft.sync='sideBarLeft'></router-view>
+      
+        <router-view :sideBarLeft.sync='sideBarLeft'></router-view>
+      
     </transition>
     <play-list ref='playList'></play-list>
-    <footer-play-bar></footer-play-bar>
+    <footer-play-bar :sideBarLeft.sync='sideBarLeft'></footer-play-bar>
   </div>
 </template>
 <script>
@@ -34,6 +36,15 @@ export default {
     '$route' (to, from) {
       const toDepth = to.path.split('/').length
       const fromDepth = from.path.split('/').length
+      console.log(to.path)
+      if (to.meta.hidePlayBar) {
+        document.querySelector('#playBar').style.display = 'none'
+      }
+      if (from.meta.hidePlayBar) {
+        setTimeout(() => {
+          document.querySelector('#playBar').style.display = 'block'
+        }, 550)
+      }
       if (toDepth > fromDepth) {
         this.enterActiveClass = 'animated slideIn animated-in'
         this.leaveActiveClass = 'animated thirdSildeOut animated-in'

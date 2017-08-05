@@ -7,6 +7,7 @@ import './styles/normalize.css'
 // import './styles/iconfont.css'
 import 'animate.css'
 import VueTouch from 'vue-touch'
+import VueLazyload from 'vue-lazyload'
 import store from './store'
 import ripple from './directives/ripple'
 import rippleBtn from './directives/ripple-btn'
@@ -17,28 +18,45 @@ import MintUI, {MessageBox} from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
 import FastClick from 'fastclick'
-Vue.use(MintUI)
-Vue.config.productionTip = false
-
-Vue.prototype.$message = MessageBox
-
-Vue.use(VueTouch, {
-  name: 'v-touch'
-})
-Vue.prototype.$toast = Toast
 
 VueTouch.config.press = {
   time: 5
 }
+
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: '/static/img/ag6.png',
+  loading: '/static/img/ag6.png',
+  attempt: 1,
+})
+Vue.use(MintUI)
+Vue.use(store)
+Vue.use(VueTouch, {
+  name: 'v-touch'
+})
+
+Vue.prototype.$message = MessageBox
+Vue.prototype.$toast = Toast
+
 Vue.directive('ripple', ripple)
-
 Vue.directive('ripple-btn', rippleBtn)
-
 Vue.directive('back', vBack)
-
 Vue.directive('tap', vTap)
 
-Vue.use(store)
+Vue.config.productionTip = false
+
+Vue.filter('numberFormat', (val) => {
+  let number = parseInt(val)
+  if (isNaN(number)) {
+    return val
+  } else {
+    if (number < 10000) {
+      return number
+    } else {
+      return `${(number / 10000).toFixed(1)}万`
+    }
+  }
+})
 
 FastClick.attach(document.body)
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class='con con-head' :style='{backgroundImage:`url(${skin.bg})`,backgroundSize:"cover"}'>
+    <div class='con con-head' :style='{backgroundImage:`url(${skin.bg}`, backgroundSize:"cover"}'>
       <ul id='header'>
       <li v-ripple><img class='avatar' :src="skin.avatar" @click='openSideBar'></li>
       <li v-ripple :key='index' v-for='(item,index) in skin.top_icons'>
@@ -101,6 +101,12 @@
 <script>
   import { mapGetters, mapState } from 'vuex'
   export default {
+    props: {
+      sideBarLeft: {
+        type: Number,
+        default: 0
+      }
+    },
     data () {
       return {
         ul_close: true,

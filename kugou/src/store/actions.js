@@ -57,3 +57,17 @@ export const songSearch = (state, {
     typeof cb === 'function' && cb()
   })
 }
+
+export const getTheme = state => {
+  return new Promise(resolve => {
+    Vue.http.get(apis.getTheme, {
+      emulateJSON: true
+    }).then(res => {
+      console.log('res.body.data')
+      state.commit('setThemes', res.body.data)
+      resolve()
+    }).catch(err => {
+      console.log(err)
+    })
+  })
+}

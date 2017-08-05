@@ -53,14 +53,14 @@ export default{
     animate: {
       bind (el, binding, vnode) {
         let arr = [
-          'static/loading2/afg.png',
-          'static/loading2/afh.png',
-          'static/loading2/afi.png',
-          'static/loading2/afj.png',
-          'static/loading2/afk.png',
-          'static/loading2/afl.png',
-          'static/loading2/afm.png',
-          'static/loading2/afn.png',
+          '/static/loading2/afg.png',
+          '/static/loading2/afh.png',
+          '/static/loading2/afi.png',
+          '/static/loading2/afj.png',
+          '/static/loading2/afk.png',
+          '/static/loading2/afl.png',
+          '/static/loading2/afm.png',
+          '/static/loading2/afn.png',
         ]
 
         let index = 0

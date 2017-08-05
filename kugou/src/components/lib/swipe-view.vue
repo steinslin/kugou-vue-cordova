@@ -82,6 +82,7 @@ export default{
       this.conOffsetLeft = this.conOffsetLeftCopy = this.conContentWidth / this.navArray.length * this.active * -1
     }
     // 更新swipe-view-item的状态
+    console.log(this.$parent.$refs)
     this.$parent.$refs['item' + this.active].updateStatus()
   },
   watch: {
@@ -89,6 +90,7 @@ export default{
       this.navOffsetLeft = this.navOffsetLeftCopy = document.getElementById('swipe-con-id').clientWidth / this.navArray.length * this.active
       this.conOffsetLeft = this.conOffsetLeftCopy = document.getElementById('swipe-con-content').clientWidth / this.navArray.length * this.active * -1
       // 更新swipe-view-item的状态
+      console.log(this.$parent.$refs)
       this.$parent.$refs['item' + this.active].updateStatus()
     }
   },

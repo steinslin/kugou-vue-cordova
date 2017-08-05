@@ -16,7 +16,8 @@
           </svg>
           <span class='title lv-flex-grow'>消息中心</span>
         </li>
-        <li v-ripple-btn class='item lv-flex' @click='setSkin'>
+        <li v-ripple-btn tag='li' class='item lv-flex' @click='goSkin'>
+        <!-- <li v-ripple-btn class='item lv-flex' @click='setSkin'> -->
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-skin2"></use>
           </svg>
@@ -120,6 +121,9 @@ export default {
     },
     closeSideBar () {
       this.$emit('closeSideBar')
+    },
+    goSkin () {
+      this.$router.push({name: 'theme'})
     }
   },
   computed: {

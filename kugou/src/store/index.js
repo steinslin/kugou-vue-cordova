@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import getSkin from '../config/skin-config.js'
+import getSkin, {skins} from '../config/skin-config.js'
 import defaultSong from '../config/song-config.js'
 import * as actions from './actions'
 import * as getters from './getters'
@@ -33,7 +33,9 @@ const store = new Vuex.Store({
     hotList: [],
     playList: [],
     playTypes: ['顺序播放', '随机播放', '单曲循环'],
-    playType
+    playType,
+    skins,
+    themes: []
   },
   getters,
   actions,

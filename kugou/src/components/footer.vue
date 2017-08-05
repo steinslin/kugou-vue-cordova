@@ -1,6 +1,6 @@
 <template>
-  <div class='footer'>
-    <v-touch :style='{backgroundImage:`url(${skin.play_bg})`,left:left}' class='con' @swiperight='openLeftLyric' @swipeleft='closeLeftLyric' >
+  <div class='footer' id='playBar'>
+    <v-touch :style='{backgroundImage:`url(${skin.play_bg})`,left:parseFloat(left) + (sideBarLeft + 88) * 0.33 + "vw"}' class='con' @swiperight='openLeftLyric' @swipeleft='closeLeftLyric' >
       <div class='con-left-lyric _relative'>
         <transition-group leave-active-class='fadeOpacityOut animated'>
           <div class='lyric' v-if='currentLyrics.length>0 && left == 0' key='1' :style='{left:lyric_left}'>{{currentLyrics[0].lyric}}
@@ -62,6 +62,12 @@
 import { mapState, mapGetters } from 'vuex'
 import { formatTime, timeToSecond } from '../util'
 export default {
+  props: {
+    sideBarLeft: {
+      type: Number,
+      default: 0
+    }
+  },
   data () {
     return {
       left: '-78vw',
@@ -275,6 +281,14 @@ export default {
   .footer .animated{
     animation-duration: .5s;
   }
+  // .aaa{
+  //   transition-delay:5s;
+  //   opacity:1;
+  // }
+  // .bbb{
+  //   transition-delay:5s;
+  //   opacity:0;
+  // }
   div.con{
     display:flex;
     transition: 0.5s all ease;

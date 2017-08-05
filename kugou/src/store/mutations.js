@@ -331,3 +331,7 @@ export const nextSong = (state, audioIndex) => {
 export const setSkin = (state, selected) => {
   state.skin = getSkin(selected)
 }
+
+export const setThemes = (state, data) => {
+  state.themes = [].concat(data.info)
+}

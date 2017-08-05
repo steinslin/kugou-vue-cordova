@@ -12,7 +12,7 @@ import kuGroup from '@/components/ku-group/ku-group'
 import search from '@/components/search/search'
 import searchresult from '@/components/search/searchresult'
 import searchHistory from '@/components/search/history'
-
+import theme from '@/components/theme/theme'
 Vue.use(Router)
 
 export default new Router({
@@ -31,7 +31,7 @@ export default new Router({
     children: [{
       path: 'result',
       name: 'searchresult',
-      component: searchresult
+      component: searchresult,
     }, {
       path: '',
       name: 'searchHistory',
@@ -69,5 +69,12 @@ export default new Router({
     path: '/2/kuGroup',
     name: 'kuGroup',
     component: kuGroup
+  }, {
+    path: '/2/theme',
+    name: 'theme',
+    component: theme,
+    meta: {
+      hidePlayBar: true
+    }
   }]
 })

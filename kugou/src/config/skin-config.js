@@ -98,4 +98,52 @@ function getSkin (selected) {
   }
 }
 
+export const skins = [
+  {
+    'id': 1153,
+    'themeid': 55,
+    'tversion': '1.10.1',
+    'title': '星夜',
+    'privilege': 0,
+    'package': 'http://downmobile.kugou.com/upload/theme_package/7a/7a03ce7b2468961785f1bcb832f1e57e.ks',
+    'package_bk': ['http://cdn.downmobile.kugou.com/upload/theme_package/7a/7a03ce7b2468961785f1bcb832f1e57e.ks'],
+    'filesize': 494801,
+    'thumb': 'http://imge.kugou.com/v2/mobile_class_banner/100/T1NSx9BQDv1RCvBVdK.jpg',
+    'preview': ['http://imge.kugou.com/v2/mobile_class_banner/100/T16IA9B4Eg1RCvBVdK.jpg', 'http://imge.kugou.com/v2/mobile_class_banner/100/T1lwD9B4Jv1RCvBVdK.jpg'],
+    'extra': null,
+    'use_total': 11099567,
+    'new_time': '2017-07-17 11:06:13'
+  },
+  {
+    'id': 1127,
+    'themeid': 99,
+    'tversion': '1.10.0',
+    'title': '我是树懒',
+    'privilege': 0,
+    'package': 'http://downmobile.kugou.com/upload/theme_package/c9/c9e38bbd50ec6c7169a21359be49d054.ks',
+    'package_bk': ['http://cdn.downmobile.kugou.com/upload/theme_package/c9/c9e38bbd50ec6c7169a21359be49d054.ks'],
+    'filesize': 488677,
+    'thumb': 'http://imge.kugou.com/v2/mobile_class_banner/100/T1KeZ9BvWT1RCvBVdK.jpg',
+    'preview': ['http://imge.kugou.com/v2/mobile_class_banner/100/T1ZTd9BgKT1RCvBVdK.jpg', 'http://imge.kugou.com/v2/mobile_class_banner/100/T1bPb9BXC_1RCvBVdK.jpg'],
+    'extra': null,
+    'use_total': 4417395,
+    'new_time': '2017-06-26 13:54:57'
+  },
+  {
+    'id': 1147,
+    'themeid': 13,
+    'tversion': '1.10.0',
+    'title': '迷鹿',
+    'privilege': 0,
+    'package': 'http://downmobile.kugou.com/upload/theme_package/0c/0c420c8e93cb571c2704136919fc0876.ks',
+    'package_bk': ['http://cdn.downmobile.kugou.com/upload/theme_package/0c/0c420c8e93cb571c2704136919fc0876.ks'],
+    'filesize': 406547,
+    'thumb': 'http://imge.kugou.com/v2/mobile_class_banner/100/T1ceJ9Bj_v1RCvBVdK.jpg',
+    'preview': ['http://imge.kugou.com/v2/mobile_class_banner/100/T18wD9BCxv1RCvBVdK.jpg', 'http://imge.kugou.com/v2/mobile_class_banner/100/T1AIV9BKbg1RCvBVdK.jpg'],
+    'extra': null,
+    'use_total': 5364108,
+    'new_time': '2017-07-16 10:52:43'
+  }
+]
+
 export default getSkin
