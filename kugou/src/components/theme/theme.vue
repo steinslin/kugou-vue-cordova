@@ -4,13 +4,13 @@
       <v-touch class='iconfont icon-left' tag='i' v-ripple v-back></v-touch>
       <span>皮肤中心</span>
     </div>
-    <div class='scroll-con'>
+    <div class='scroll-con' id='scroll-ripple-con'>
       <lv-swipe :nav-array='navArray' ref='swipe'>
-        <lv-swipe-item :loaded='loaded[0]' ref='item0'>
+        <lv-swipe-item :loaded='loaded[0]'  ref='item0'>
           <div class='scon'>
-            <ul class='lv-flex-wrap lv-flex' slot='data'>
-              <li v-for='item in skins'>
-                <div class='img-box lv-border'>
+            <ul class='lv-flex-wrap lv-flex' slot='data' v-for='(theme,index) in themes' v-if='theme.name === navArray[0]'>
+              <li v-for='item in theme.themes'>
+                <div class='img-box lv-border' @click='chooseSkin(item.id)' v-ripple-btn:id='"scroll-ripple-con"'>
                   <img v-lazy="item.thumb" />
                 </div>
                 <div class='light_color_2'>{{item.title}}</div>
@@ -26,7 +26,7 @@
           <div class='scon'>
             <ul class='lv-flex-wrap lv-flex' slot='data' v-for='(theme,index) in themes' v-if='theme.name === navArray[1]'>
               <li v-for='item in theme.themes'>
-                <div class='img-box lv-border'>
+                <div class='img-box lv-border' @click='chooseSkin(item.id)' v-ripple-btn:id='"scroll-ripple-con"'>
                   <img v-lazy="item.thumb" />
                 </div>
                 <div class='light_color_2'>{{item.title}}</div>
@@ -42,7 +42,7 @@
           <div class='scon'>
             <ul class='lv-flex-wrap lv-flex' slot='data' v-for='(theme,index) in themes' v-if='theme.name === navArray[2]'>
               <li v-for='item in theme.themes'>
-                <div class='img-box lv-border'>
+                <div class='img-box lv-border' @click='chooseSkin(item.id)' v-ripple-btn:id='"scroll-ripple-con"'>
                   <img v-lazy="item.thumb" />
                 </div>
                 <div class='light_color_2'>{{item.title}}</div>
@@ -58,7 +58,7 @@
           <div class='scon'>
             <ul class='lv-flex-wrap lv-flex' slot='data' v-for='(theme,index) in themes' v-if='theme.name === navArray[3]'>
               <li v-for='item in theme.themes'>
-                <div class='img-box lv-border'>
+                <div class='img-box lv-border' @click='chooseSkin(item.id)' v-ripple-btn:id='"scroll-ripple-con"'>
                   <img v-lazy="item.thumb" />
                 </div>
                 <div class='light_color_2'>{{item.title}}</div>
@@ -74,7 +74,7 @@
           <div class='scon'>
             <ul class='lv-flex-wrap lv-flex' slot='data' v-for='(theme,index) in themes' v-if='theme.name === navArray[4]'>
               <li v-for='item in theme.themes'>
-                <div class='img-box lv-border'>
+                <div class='img-box lv-border' @click='chooseSkin(item.id)' v-ripple-btn:id='"scroll-ripple-con"'>
                   <img v-lazy="item.thumb" />
                 </div>
                 <div class='light_color_2'>{{item.title}}</div>
@@ -90,7 +90,7 @@
           <div class='scon'>
             <ul class='lv-flex-wrap lv-flex' slot='data' v-for='(theme,index) in themes' v-if='theme.name === navArray[5]'>
               <li v-for='item in theme.themes'>
-                <div class='img-box lv-border'>
+                <div class='img-box lv-border' @click='chooseSkin(item.id)' v-ripple-btn:id='"scroll-ripple-con"'>
                   <img v-lazy="item.thumb" />
                 </div>
                 <div class='light_color_2'>{{item.title}}</div>
@@ -130,6 +130,12 @@ export default {
       this.$store.dispatch('getTheme').then(_ => {
         this.loaded.splice(1, 1, true)
       })
+    },
+    chooseSkin (id) {
+      this.$router.push({
+        name: 'skin-preview',
+        params: { id }
+      })
     }
   }
 }
@@ -146,7 +152,6 @@ $padding: 4vw;
   }
   .scon{
     box-sizing:border-box;
-    overflow: auto;
     width:100vw;
     padding:$padding;
   }

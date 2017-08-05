@@ -1,9 +1,7 @@
 <template> <!-- :style='{left: (sideBarLeft + 88) * 0.33 + "vw"}' -->
   <div id="app" class='bg wholepage _fixed' style='transition:left .5s'>
     <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
-      
-        <router-view :sideBarLeft.sync='sideBarLeft'></router-view>
-      
+      <router-view :sideBarLeft.sync='sideBarLeft'></router-view>
     </transition>
     <play-list ref='playList'></play-list>
     <footer-play-bar :sideBarLeft.sync='sideBarLeft'></footer-play-bar>
@@ -40,7 +38,7 @@ export default {
       if (to.meta.hidePlayBar) {
         document.querySelector('#playBar').style.display = 'none'
       }
-      if (from.meta.hidePlayBar) {
+      if (from.meta.hidePlayBar && !to.meta.hidePlayBar) {
         setTimeout(() => {
           document.querySelector('#playBar').style.display = 'block'
         }, 550)
@@ -73,46 +71,46 @@ $nav_bg_color       : #213051;
 }
 */
 .header-con{
-    display: flex;
-    box-sizing: border-box;
-    margin-top: 0.25rem;
-    padding:0.25rem 3vw;
-    height: 1.5rem;
-    *{
-        line-height: 1.15rem;
-        height: 1.15rem;
-    }
-    .iconfont{
-        font-size: 5vw;
-    }
-    .icon-left{
-        margin-right: 4vw;
-        position: relative;
-    }
+  display: flex;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+  padding:0.25rem 3vw;
+  height: 1.5rem;
+  *{
+    line-height: 1.15rem;
+    height: 1.15rem;
+  }
+  .iconfont{
+    font-size: 5vw;
+  }
+  .icon-left{
+    margin-right: 4vw;
+    position: relative;
+  }
 } 
 
 .mint-toast{
-    font-weight: 200;
+  font-weight: 200;
 }
 .mint-msgbox-header{
-    display: none;
+  display: none;
 }
 body .mint-msgbox-message{
-    color:$color_primary;
-    line-height: 2.2rem
+  color:$color_primary;
+  line-height: 2.2rem
 }
 body .mint-msgbox{
-    font-size: 4vw;
+  font-size: 4vw;
 }
 .mint-msgbox-btns button{
-    font-size: 4.5vw;
-    background-color: transparent;
+  font-size: 4.5vw;
+  background-color: transparent;
 }
 body button.mint-msgbox-cancel{
   color:$color_primary;
   &:active{
-      background-color:transparent;
-      color:color_primary;
+    background-color:transparent;
+    color:color_primary;
   }
   position: relative;
   &:before{
@@ -131,9 +129,9 @@ body button.mint-msgbox-cancel{
   border-right: 0px solid $border-color;
 }
 body button.mint-msgbox-confirm{
-    &:active{
-        background-color:transparent;
-    }
+  &:active{
+    background-color:transparent;
+  }
 }
 body .mint-msgbox-content{
   position: relative;
@@ -153,67 +151,67 @@ body .mint-msgbox-content{
   border-bottom: 0px solid $border-color;
 }
 .animated.animated-in {
-    animation-duration: .5s;
+  animation-duration: .5s;
 }
 
 .active-border{
-    color:$light_active_color;
-    height:2px;
-    background-color:$border_color; 
+  color:$light_active_color;
+  height:2px;
+  background-color:$border_color; 
 }
 
 .active{
-    color:$light_active_color !important;
+  color:$light_active_color !important;
 }
 
 .swipe-con-nav{
-    background-color: $nav_bg_color
+  background-color: $nav_bg_color
 }
 #app {
-    font-family: 'microsoft yahei', 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 4vw;
-    ul,
-    li,
-    div {
-        border-color: $border_color;
-    }
-    width:100vw;
-    /* overflow:hidden; 这个加上在切换路由时动画有bug  */
-    @for $i from 1 through 6 {
-        .z#{$i} { z-index:$i; }
-    }
+  font-family: 'microsoft yahei', 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 4vw;
+  ul,
+  li,
+  div {
+    border-color: $border_color;
+  }
+  width:100vw;
+  /* overflow:hidden; 这个加上在切换路由时动画有bug  */
+  @for $i from 1 through 6 {
+    .z#{$i} { z-index:$i; }
+  }
 }
 
 .text-no-wrap {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .small {
-    font-size: 3vw;
-    line-height: 1.2;
+  font-size: 3vw;
+  line-height: 1.2;
 }
 
 .medium{
-    font-size: 4.5vw;
-    line-height: 1.3;
+  font-size: 4.5vw;
+  line-height: 1.3;
 }
 .iconfont {
-    display: inline-block;
+  display: inline-block;
 }
 
 .wholepage {
-    height: 25rem;
-    width: 100vw;
+  height: 25rem;
+  width: 100vw;
 }
 
 .view {
-    position: absolute;
-    left: 0px;
-    right: 0px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
 }
 
 .bg {
@@ -225,204 +223,204 @@ body .mint-msgbox-content{
 }
 
 .light_color_2 {
-    color: $light_color_2;
+  color: $light_color_2;
 }
 
 .light_color {
-    color: $color_light;
+  color: $color_light;
 }
 
 .primary_color {
-    color: $color_primary;
+  color: $color_primary;
 }
 
 .btn-noborder {
-    border: none;
-    color: $color_primary;
-    background: transparent;
-    outline: none;
+  border: none;
+  color: $color_primary;
+  background: transparent;
+  outline: none;
 }
 
 input {
-    outline: none;
+  outline: none;
 }
 
 ._right {
-    float: right;
+  float: right;
 }
 
 ._relative {
-    position: relative;
+  position: relative;
 }
 
 ._absolute {
-    position: absolute;
+  position: absolute;
 }
 
 ._fixed {
-    position: fixed;
+  position: fixed;
 }
 
 .ripple {
-    background-color: rgba(255, 255, 255, 0.4);
-    animation: ripple 1.8s forwards cubic-bezier(0, 0, 0.2, 1);
+  background-color: rgba(255, 255, 255, 0.4);
+  animation: ripple 1.5s forwards cubic-bezier(0, 0, 0.2, 1);
 }
 .ripple-circle {
-    background-color: rgba(255, 255, 255, 0.4);
-    animation: ripple .8s forwards cubic-bezier(0, 0, 0.2, 1);
+  background-color: rgba(255, 255, 255, 0.4);
+  animation: ripple .8s forwards cubic-bezier(0, 0, 0.2, 1);
 }
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-    color: $playholder_color;
+  color: $playholder_color;
 }
 
 input:-moz-placeholder,
 textarea:-moz-placeholder {
-    color: $playholder_color;
+  color: $playholder_color;
 }
 
 input::-moz-placeholder,
 textarea::-moz-placeholder {
-    color: $playholder_color;
+  color: $playholder_color;
 }
 
 input:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-    color: $playholder_color;
+  color: $playholder_color;
 }
 
 @keyframes ripple {
-    0% {
-        transform: scale(0);
-        opacity: 1;
-    }
-    80% {
-        transform: scale(1);
-    }
-    100% {
-        opacity: 0;
-    }
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @-webkit-keyframes slideOut {
-    from {
-        -webkit-transform: none;
-        transform: none;
-    }
-    to {
-        -webkit-transform: translate3d(100vw, 0, 0);
-        transform: translate3d(100vw, 0, 0);
-    }
+  from {
+    -webkit-transform: none;
+    transform: none;
+  }
+  to {
+    -webkit-transform: translate3d(100vw, 0, 0);
+    transform: translate3d(100vw, 0, 0);
+  }
 }
 
 @keyframes slideOut {
-    from {
-        -webkit-transform: none;
-        transform: none;
-    }
-    to {
-        -webkit-transform: translate3d(100vw, 0, 0);
-        transform: translate3d(100vw, 0, 0);
-    }
+  from {
+    -webkit-transform: none;
+    transform: none;
+  }
+  to {
+    -webkit-transform: translate3d(100vw, 0, 0);
+    transform: translate3d(100vw, 0, 0);
+  }
 }
 
 @-webkit-keyframes slideIn {
-    from {
-        -webkit-transform: translate3d(100vw, 0, 0);
-        transform: translate3d(100vw, 0, 0);
-    }
-    to {
-        -webkit-transform: none;
-        transform: none;
-    }
+  from {
+    -webkit-transform: translate3d(100vw, 0, 0);
+    transform: translate3d(100vw, 0, 0);
+  }
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
 }
 
 @keyframes slideIn {
-    from {
-        -webkit-transform: translate3d(100vw, 0, 0);
-        transform: translate3d(100vw, 0, 0);
-    }
-    to {
-        -webkit-transform: none;
-        transform: none;
-    }
+  from {
+    -webkit-transform: translate3d(100vw, 0, 0);
+    transform: translate3d(100vw, 0, 0);
+  }
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
 }
 
 @-webkit-keyframes thirdSildeOut {
-    from {
-        -webkit-transform: none;
-        transform: none;
-        
-    }
-    to {
-        -webkit-transform: translate3d(-33vw, 0, 0);
-        transform: translate3d(-33vw, 0, 0);
-    }
+  from {
+    -webkit-transform: none;
+    transform: none;
+      
+  }
+  to {
+    -webkit-transform: translate3d(-33vw, 0, 0);
+    transform: translate3d(-33vw, 0, 0);
+  }
 }
 
 @keyframes thirdSildeOut {
-    from {
-        -webkit-transform: none;
-        transform: none;
-        
-    }
-    to {
-        -webkit-transform: translate3d(-33vw, 0, 0);
-        transform: translate3d(-33vw, 0, 0);
-    }
+  from {
+    -webkit-transform: none;
+    transform: none;
+      
+  }
+  to {
+    -webkit-transform: translate3d(-33vw, 0, 0);
+    transform: translate3d(-33vw, 0, 0);
+  }
 }
 
 @-webkit-keyframes thirdSildeIn {
-    from {
-        -webkit-transform: translate3d(-33vw, 0, 0);
-        transform: translate3d(-33vw, 0, 0);
-    }
-    to {
-        -webkit-transform: none;
-        transform: none;
-    }
+  from {
+    -webkit-transform: translate3d(-33vw, 0, 0);
+    transform: translate3d(-33vw, 0, 0);
+  }
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
 }
 
 @keyframes thirdSildeIn {
-    from {
-         -webkit-transform: translate3d(-33vw, 0, 0);
-        transform: translate3d(-33vw, 0, 0);
-    }
-    to {
-        -webkit-transform: none;
-        transform: none;
-    }
+  from {
+     -webkit-transform: translate3d(-33vw, 0, 0);
+    transform: translate3d(-33vw, 0, 0);
+  }
+  to {
+    -webkit-transform: none;
+    transform: none;
+  }
 }
 
 @keyframes fadeOpacityOut {
-    from {
-        opacity: 1
-    }
-    to {
-        opacity: 0
-    }
+  from {
+      opacity: 1
+  }
+  to {
+      opacity: 0
+  }
 }
 .slideIn{
-    -webkit-animation-name: slideIn;
-    animation-name: slideIn;
+  -webkit-animation-name: slideIn;
+  animation-name: slideIn;
 }
 
 .slideOut{
-    -webkit-animation-name: slideOut;
-    animation-name: slideOut;
+  -webkit-animation-name: slideOut;
+  animation-name: slideOut;
 }
 
 .thirdSildeOut{
-    -webkit-animation-name: thirdSildeOut;
-    animation-name: thirdSildeOut;
+  -webkit-animation-name: thirdSildeOut;
+  animation-name: thirdSildeOut;
 }
 
 .thirdSildeIn{
-    -webkit-animation-name: AutoFileName;
-    animation-name: thirdSildeIn;
+  -webkit-animation-name: AutoFileName;
+  animation-name: thirdSildeIn;
 }
 .fadeOpacityOut{
-    animation-name: fadeOpacityOut
+  animation-name: fadeOpacityOut
 }
 </style>

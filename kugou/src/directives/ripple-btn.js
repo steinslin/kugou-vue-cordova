@@ -24,6 +24,7 @@ RippleEffect.prototype = {
       }
     }
     let scrollTop = scrollTarget.scrollTarget || 0
+    console.log(scrollTop)
     var rippleContainer = document.createElement('div')
     let currentStyle = this.element.currentStyle ? this.element.currentStyle : document.defaultView.getComputedStyle(this.element, null)
     rippleContainer.style.borderRadius = currentStyle.borderRadius

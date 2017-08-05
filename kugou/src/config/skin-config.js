@@ -1,18 +1,28 @@
-let skinConfig = {
+export let skinConfig = {
   // 4套皮肤 默认采用第3套
-  selected: 2,
-  skins: ['elk', 'christmaseve', 'starrysky', 'cute']
+  id: parseInt(localStorage.getItem('skin_id')) || 1153,
+  skins: [{
+    id: 1147,
+    dir: 'elk'
+  }, {
+    id: 1169,
+    dir: 'cute'
+  }, {
+    id: 1153,
+    dir: 'starrysky'
+  }]
 }
 
-if (localStorage) {
-  let selected = localStorage.getItem('skinConfig_selected')
-  if (selected && typeof selected === 'number') {
-    skinConfig.selected = selected
+function getSkin (id) {
+  id = id || skinConfig.id
+  let index = 0
+  for (let i = 0; i < skinConfig.skins.length; i++) {
+    if (skinConfig.skins[i].id === id) {
+      index = i
+      break
+    }
   }
-}
-
-function getSkin (selected) {
-  let dir = `static/skins/${skinConfig.skins[selected || skinConfig.selected]}${'/res/drawable-xhdpi-v4'}`
+  let dir = `static/skins/${skinConfig.skins[index].dir}${'/res/drawable-xhdpi-v4'}`
   return {
     indexBg: `${dir}/skin_kg_navigation_local_entry_bg.png`,
     bg: `${dir}/skin_main_bg.png`,
@@ -98,8 +108,10 @@ function getSkin (selected) {
   }
 }
 
-export const skins = [
-  {
+export const skins = {
+  ids: [1147, 1169, 1153],
+  name: '已下载',
+  themes: [{
     'id': 1153,
     'themeid': 55,
     'tversion': '1.10.1',
@@ -113,23 +125,21 @@ export const skins = [
     'extra': null,
     'use_total': 11099567,
     'new_time': '2017-07-17 11:06:13'
-  },
-  {
-    'id': 1127,
-    'themeid': 99,
+  }, {
+    'id': 1169,
+    'themeid': 103,
     'tversion': '1.10.0',
-    'title': '我是树懒',
+    'title': '月来月萌',
     'privilege': 0,
-    'package': 'http://downmobile.kugou.com/upload/theme_package/c9/c9e38bbd50ec6c7169a21359be49d054.ks',
-    'package_bk': ['http://cdn.downmobile.kugou.com/upload/theme_package/c9/c9e38bbd50ec6c7169a21359be49d054.ks'],
-    'filesize': 488677,
-    'thumb': 'http://imge.kugou.com/v2/mobile_class_banner/100/T1KeZ9BvWT1RCvBVdK.jpg',
-    'preview': ['http://imge.kugou.com/v2/mobile_class_banner/100/T1ZTd9BgKT1RCvBVdK.jpg', 'http://imge.kugou.com/v2/mobile_class_banner/100/T1bPb9BXC_1RCvBVdK.jpg'],
+    'package': 'http://downmobile.kugou.com/upload/theme_package/70/70f0a697c68a54c5e2e3aa039556b725.ks',
+    'package_bk': ['http://cdn.downmobile.kugou.com/upload/theme_package/70/70f0a697c68a54c5e2e3aa039556b725.ks'],
+    'filesize': 556143,
+    'thumb': 'http://imge.kugou.com/v2/mobile_class_banner/100/T1ZIb9ByWj1RCvBVdK.jpg',
+    'preview': ['http://imge.kugou.com/v2/mobile_class_banner/100/T1meE9B5x_1RCvBVdK.jpg', 'http://imge.kugou.com/v2/mobile_class_banner/100/T10eh9BK_T1RCvBVdK.jpg'],
     'extra': null,
-    'use_total': 4417395,
-    'new_time': '2017-06-26 13:54:57'
-  },
-  {
+    'use_total': 9321927,
+    'new_time': '2017-06-26 16:39:45'
+  }, {
     'id': 1147,
     'themeid': 13,
     'tversion': '1.10.0',
@@ -143,7 +153,7 @@ export const skins = [
     'extra': null,
     'use_total': 5364108,
     'new_time': '2017-07-16 10:52:43'
-  }
-]
+  }]
+}
 
 export default getSkin

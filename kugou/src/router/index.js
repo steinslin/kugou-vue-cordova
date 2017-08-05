@@ -13,11 +13,15 @@ import search from '@/components/search/search'
 import searchresult from '@/components/search/searchresult'
 import searchHistory from '@/components/search/history'
 import theme from '@/components/theme/theme'
+import skinPreview from '@/components/theme/skinPreview'
 Vue.use(Router)
 
 export default new Router({
   mode: 'hash',
   routes: [{
+    path: '*',
+    component: index
+  }, {
     path: '/',
     component: index
   }, {
@@ -73,6 +77,13 @@ export default new Router({
     path: '/2/theme',
     name: 'theme',
     component: theme,
+    meta: {
+      hidePlayBar: true
+    }
+  }, {
+    path: '/2/theme/skin-preview/:id',
+    name: 'skin-preview',
+    component: skinPreview,
     meta: {
       hidePlayBar: true
     }

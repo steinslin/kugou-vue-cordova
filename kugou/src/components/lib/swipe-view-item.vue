@@ -87,7 +87,7 @@ export default{
   },
   watch: {
     visited (newval, oldval) {
-      if (!oldval && typeof this.loadingFunction === 'function') {
+      if (!oldval && typeof this.loadingFunction === 'function' && !this.loaded) {
         this.loadingFunction()
       }
     }

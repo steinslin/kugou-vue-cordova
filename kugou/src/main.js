@@ -58,6 +58,20 @@ Vue.filter('numberFormat', (val) => {
   }
 })
 
+Vue.filter('filesizeFormat', (val) => {
+  let size = parseInt(val, 10)
+  if (size / 1024 > 1) {
+    size /= 1024
+    if (size / 1024 > 1) {
+      return `${size.toFixed(1)}MB`
+    } else {
+      return `${size.toFixed(0)}KB`
+    }
+  } else {
+    return `${size}B`
+  }
+})
+
 FastClick.attach(document.body)
 
 /* eslint-disable no-new */
