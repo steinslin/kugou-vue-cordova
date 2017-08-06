@@ -45,6 +45,7 @@
 const FAST_SWIPE_SECOND = 300
 const FAST_SWIPE_DISTANCE = 15
 const SWIPE_LIMIT = 0.45
+const RATE = 0.7
 export default{
   props: {
     activeIndex: {
@@ -124,8 +125,8 @@ export default{
       e.stopPropagation()
       this.currentX = e.touches[0].pageX
       this.currentY = e.touches[0].pageY
-      this.navOffsetLeft = this.navOffsetLeftCopy + (startX - currentX) / navArray.length
-      this.conOffsetLeft = this.conOffsetLeftCopy + (currentX - startX)
+      this.navOffsetLeft = this.navOffsetLeftCopy + (startX - currentX) / navArray.length * RATE
+      this.conOffsetLeft = this.conOffsetLeftCopy + (currentX - startX) * RATE
     },
     swipeEnd (e) {
       this.swiping = false

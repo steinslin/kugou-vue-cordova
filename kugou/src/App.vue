@@ -1,7 +1,9 @@
 <template> <!-- :style='{left: (sideBarLeft + 88) * 0.33 + "vw"}' -->
   <div id="app" class='bg wholepage _fixed' style='transition:left .5s'>
     <transition :enter-active-class="enterActiveClass" :leave-active-class="leaveActiveClass">
-      <router-view :sideBarLeft.sync='sideBarLeft'></router-view>
+      <!-- <keep-alive> -->
+        <router-view :sideBarLeft.sync='sideBarLeft'></router-view>
+      <!-- </keep-alive> -->
     </transition>
     <play-list ref='playList'></play-list>
     <footer-play-bar :sideBarLeft.sync='sideBarLeft'></footer-play-bar>

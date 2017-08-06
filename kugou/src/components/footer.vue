@@ -1,5 +1,5 @@
 <template>
-  <div class='footer' id='playBar' style='display:none'>
+  <div class='footer' id='playBar'>
     <v-touch :style='{backgroundImage:`url(${skin.play_bg})`,left:parseFloat(left) + (sideBarLeft + 88) * 0.33 + "vw"}' class='con' @swiperight='openLeftLyric' @swipeleft='closeLeftLyric' >
       <div class='con-left-lyric _relative'>
         <transition-group leave-active-class='fadeOpacityOut animated'>

@@ -17,7 +17,7 @@ import Toast from './components/lib/toast.js'
 import MintUI, {MessageBox} from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
-import FastClick from 'fastclick'
+// import FastClick from 'fastclick'
 
 VueTouch.config.press = {
   time: 5
@@ -72,7 +72,7 @@ Vue.filter('filesizeFormat', (val) => {
   }
 })
 
-FastClick.attach(document.body)
+// FastClick.attach(document.body)
 
 /* eslint-disable no-new */
 new Vue({

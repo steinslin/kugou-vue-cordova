@@ -26,8 +26,8 @@
           </ul>
         </lv-loadmore>
       </lv-swipe-item>
-      <lv-swipe-item :loaded='loaded[1]' ref='item1' :loading-function='searchMV'></lv-swipe-item>
-      <lv-swipe-item :loaded='loaded[2]' ref='item2' >2</lv-swipe-item>
+      <lv-swipe-item :loaded='loaded[1]' ref='item1' :loading-function='searchMV'>12321</lv-swipe-item>
+      <lv-swipe-item :loaded='loaded[2]' ref='item2' ></lv-swipe-item>
       <lv-swipe-item :loaded='loaded[3]' ref='item3' >3</lv-swipe-item>
       <lv-swipe-item :loaded='loaded[4]' ref='item4' >4</lv-swipe-item> 
     </lv-swipe>
@@ -49,13 +49,19 @@ export default {
       songLoadmorePageIndex: 1,
       allLoaded: false,
       navArray: ['歌曲', 'MV', '专辑', '歌单', '歌词'],
-      loaded: [false, false, false, false, false]
+      loaded: [false, false, false, false, false],
+      nowa: false
     }
   },
   components: {
     lvLoadmore,
     lvSwipe,
     lvSwipeItem,
+  },
+  created () {
+    setTimeout(() => {
+      this.nowa = true
+    }, 10000)
   },
   computed: {
     ...mapState(['searchSongs', 'page', 'pagesize']),
