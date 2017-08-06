@@ -3,6 +3,7 @@ export default {
   name: 'vBack',
   bind (el, binding, vnode) {
     let value = binding.value || -1
+    console.log(vnode)
     new BackEffect(el, value, vnode.componentInstance)
   }
 }

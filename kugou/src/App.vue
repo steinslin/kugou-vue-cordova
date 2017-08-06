@@ -88,7 +88,13 @@ $nav_bg_color       : #213051;
     position: relative;
   }
 } 
-
+.img-back{
+  transform: rotate(180deg);
+  width: 2.4vw;
+  height: 4vw;
+  margin-right: 4vw;
+  margin-top: 1.7vw;
+}
 .mint-toast{
   font-weight: 200;
 }

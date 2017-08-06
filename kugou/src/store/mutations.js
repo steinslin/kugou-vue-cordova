@@ -330,6 +330,7 @@ export const nextSong = (state, audioIndex) => {
 
 export const setSkin = (state, id) => {
   state.skin = getSkin(id)
+  state.skinId = id
 }
 
 export const setThemes = (state, data) => {

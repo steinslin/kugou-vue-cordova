@@ -1,7 +1,7 @@
 <template>
   <div class='view wholepage con bg z2 theme'  :style="{backgroundImage: `url(${skin.bg})`}">
     <div class='header-con lv-bottom-border'>
-      <v-touch class='iconfont icon-left' tag='i' v-ripple v-back></v-touch>
+      <v-touch v-ripple v-back tag='img' src="static/img/agp.png" class='img-back' />
       <span>皮肤中心</span>
     </div>
     <div class='scroll-con' id='scroll-ripple-con'>

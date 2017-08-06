@@ -1,7 +1,7 @@
 <template>
   <div class='view wholepage con bg z3 skin-preview' :style="{backgroundImage: `url(${skin.bg})`}">
     <div class='header-con'>
-      <v-touch class='iconfont icon-left' tag='i' v-ripple v-back></v-touch>
+      <v-touch v-ripple v-back tag='img' src="static/img/agp.png" class='img-back' />
       <span>皮肤详情</span> 
     </div>
     <div class='skin-preview-con'>
@@ -63,6 +63,7 @@ export default {
       })
       return
     }
+    console.log('???')
     this.using = this.id === this.skinId
     this.getSkin()
   },
