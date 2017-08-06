@@ -78,7 +78,8 @@ export default new Router({
     name: 'theme',
     component: theme,
     meta: {
-      hidePlayBar: true
+      hidePlayBar: true,
+      keepAlive: true
     }
   }, {
     path: '/2/theme/skin-preview/:id',

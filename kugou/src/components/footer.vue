@@ -20,8 +20,8 @@
         </div>
         <div class='audio con-right _relative'>
           <v-touch class='progress-bar unfinish' id='unfinish'>
-            <div class='finish' :style='{width:rate_of_progress}'></div>
-            <v-touch @pan='setRateOfProgress($event,"unfinish",".slider-btn")' @panend='panend' class='slider-btn-con'  :style='{left:rate_of_progress}' :class='showLyric?"scale":""'>
+            <div class='finish' :style='{width:parseFloat(rate_of_progress).toFixed() + "%"}'></div>
+            <v-touch @pan='setRateOfProgress($event,"unfinish",".slider-btn")' @panend='panend' class='slider-btn-con'  :style='{left:parseFloat(rate_of_progress).toFixed() + "%"}' :class='showLyric?"scale":""'>
               <div class='slider-btn' ></div>           
             </v-touch>      
           </v-touch>

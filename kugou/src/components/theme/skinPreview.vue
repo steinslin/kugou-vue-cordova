@@ -57,7 +57,6 @@ export default {
     ...mapState(['skin', 'themes', 'skins', 'skinId']),
   },
   mounted () {
-    console.log(123123)
     if (!this.id) {
       this.$toast({
         message: '没有找到皮肤'
@@ -69,6 +68,7 @@ export default {
   },
   methods: {
     changeActive (index) {
+      this.swiping = false
       this.active = index
     },
     swipe (direction) {

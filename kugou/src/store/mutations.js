@@ -333,5 +333,8 @@ export const setSkin = (state, id) => {
 }
 
 export const setThemes = (state, data) => {
+  if (state.themes.length > 1) {
+    return
+  }
   state.themes = state.themes.concat(data.info)
 }
