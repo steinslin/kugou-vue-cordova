@@ -4,7 +4,7 @@
       <v-touch v-ripple v-back tag='img' src="static/img/agp.png" class='img-back' />
       <div class='search-con'>
         <i class="iconfont icon-search light_color"></i>
-        <input type="text" class="search-input primary_color" playholder='想听什么歌呢...' autofocus v-model.trim='inputMsg' @keyup.enter='enter' @focus='focus'/>
+        <input type="text" class="search-input primary_color" playholder='想听什么歌呢...' v-model.trim='inputMsg' @keyup.enter='enter' @focus='focus'/>
       </div>
       <router-link :to='{name:"searchresult"}' replace>
         <v-touch v-ripple-btn tag='button' class='search-btn btn-noborder' @tap='search'>搜索</v-touch>

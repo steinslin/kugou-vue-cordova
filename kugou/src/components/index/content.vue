@@ -279,17 +279,17 @@ ul{
   flex-grow:1;
   position: relative;
     &:before{
-        z-index:-1;
-        content: "";
-        display: block;
-        position:absolute;
-        width: 200%;
-        left:0;
-        top:0;
-        transform-origin: 0 0;
-        height: 200%;
-        border-bottom: 1px solid $dark-border-color;
-        transform: scale(.5);
+      z-index:-1;
+      content: "";
+      display: block;
+      position:absolute;
+      width: 200%;
+      left:0;
+      top:0;
+      transform-origin: 0 0;
+      height: 200%;
+      border-bottom: 1px solid $dark-border-color;
+      transform: scale(.5);
     }
 }
 

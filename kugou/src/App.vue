@@ -41,7 +41,7 @@ export default {
       if (from.meta.hidePlayBar && !to.meta.hidePlayBar) {
         setTimeout(() => {
           document.querySelector('#playBar').style.display = 'block'
-        }, 550)
+        }, 600)
       }
       if (toDepth > fromDepth) {
         this.enterActiveClass = 'animated slideIn animated-in'
