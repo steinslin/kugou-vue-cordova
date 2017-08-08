@@ -559,7 +559,7 @@ request.get(apis.getEveryDayRec, {
 }, function(err, _res, body) {
   console.log(body)
   if (!err && _res.statusCode === 200) {
-    // res.send(body)
+    res.send(body)
   } else {
     console.log(err)
   }
