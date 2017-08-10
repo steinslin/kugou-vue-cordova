@@ -10,4 +10,5 @@ const config = {
   host,
   port
 }
+console.log(host)
 module.exports = config

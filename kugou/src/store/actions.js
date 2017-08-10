@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {
-  apis
+  apis,
+  host
 } from '../config/server.js'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
@@ -11,6 +12,7 @@ export const getSong = (state, {
   cb,
   flag = true
 }) => {
+  console.log(apis.getSong, host)
   Vue.http.get(apis.getSong, {
     params: {
       hash: hash,

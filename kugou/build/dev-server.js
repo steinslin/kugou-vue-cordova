@@ -67,7 +67,7 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-var uri = `http://${host}:${port}`
+// var uri = 'http://localhost:' + port
 
 var _resolve
 var readyPromise = new Promise(resolve => {
@@ -76,15 +76,17 @@ var readyPromise = new Promise(resolve => {
 
 console.log('> Starting dev server...')
 devMiddleware.waitUntilValid(() => {
-  console.log('> Listening at ' + uri + '\n')
+  // console.log('> Listening at ' + uri + '\n')
     // when env is testing, don't need open it
-  if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
-    opn(uri)
-  }
+  // if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
+  //   opn(uri)
+  // }
   _resolve()
 })
 
-var server = app.listen(port)
+var server = app.listen(port, host, function() {
+  console.log(`dev server listening at ${host}:${port}`)
+})
 
 module.exports = {
   ready: readyPromise,
