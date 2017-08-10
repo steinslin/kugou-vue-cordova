@@ -1,6 +1,7 @@
 require('./check-versions')()
-require('../proxy.js');
+require('../proxy.js')
 var config = require('../config')
+var host = require('../src/config/server.js').host
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
@@ -66,7 +67,7 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-var uri = 'http://localhost:' + port
+var uri = `http://${host}:${port}`
 
 var _resolve
 var readyPromise = new Promise(resolve => {

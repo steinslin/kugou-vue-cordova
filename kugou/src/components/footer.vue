@@ -190,15 +190,15 @@ export default {
     readyListen: {
       bind (el, bindings, vnode) {
         el.onended = () => vnode.context.$store.commit('audioEnd', vnode.context.audioIndex)
-        el.onerror = (error) => {
-          console.log(error)
-          vnode.context.$toast({
-            message: el.error.message + '播放出错，自动为您播放下一首'
-          })
-          setTimeout(() => {
-            vnode.context.nextSong()
-          }, 500)
-        }
+        // el.onerror = (error) => {
+        //   console.log(error)
+        //   vnode.context.$toast({
+        //     message: el.error.message + '播放出错，自动为您播放下一首'
+        //   })
+        //   setTimeout(() => {
+        //     vnode.context.nextSong()
+        //   }, 500)
+        // }
       },
       componentUpdated (el, bindings, vnode) {
         vnode.context.audioLoading = el.readyState !== 4 && bindings.value
