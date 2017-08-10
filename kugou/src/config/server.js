@@ -1,5 +1,5 @@
 // const server = 'http://localhost:3000';
-const host = require('quick-local-ip').getLocalIP4()
+const host = '192.168.0.3'
 const port = 3000
 const config = {
   apis: {
