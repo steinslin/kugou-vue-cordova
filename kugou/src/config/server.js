@@ -1,5 +1,5 @@
 // const server = 'http://localhost:3000';
-const host = 'localhost'
+var host = require('quick-local-ip').getLocalIP4()
 const port = 3000
 const config = {
   apis: {
