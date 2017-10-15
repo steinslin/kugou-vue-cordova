@@ -183,11 +183,12 @@ $padding: 4vw;
         box-sizing:border-box;
       }
       img{
-        max-width: 100%;
+        width: 100%;
         height:7rem;
         &[lazy=loading]{
           opacity: .5;
           height:auto;
+          width:auto;
           max-height: 100%;
           max-width:100%;
         }

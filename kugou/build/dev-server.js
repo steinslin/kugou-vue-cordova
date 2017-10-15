@@ -84,7 +84,7 @@ devMiddleware.waitUntilValid(() => {
   _resolve()
 })
 
-var server = app.listen(port, host, function() {
+var server = app.listen(port, function () {
   console.log(`dev server listening at ${host}:${port}`)
 })
 

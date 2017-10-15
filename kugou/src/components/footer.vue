@@ -22,7 +22,7 @@
           <v-touch class='progress-bar unfinish' id='unfinish'>
             <div class='finish' :style='{width:parseFloat(rate_of_progress).toFixed() + "%"}'></div>
             <v-touch @pan='setRateOfProgress($event,"unfinish",".slider-btn")' @panend='panend' class='slider-btn-con'  :style='{left:parseFloat(rate_of_progress).toFixed() + "%"}' :class='showLyric?"scale":""'>
-              <div class='slider-btn' ></div>           
+              <div class='slider-btn' v-compute-px></div>           
             </v-touch>      
           </v-touch>
           <div class='lv-flex-nowrap lv-center' >
@@ -190,18 +190,26 @@ export default {
     readyListen: {
       bind (el, bindings, vnode) {
         el.onended = () => vnode.context.$store.commit('audioEnd', vnode.context.audioIndex)
-        // el.onerror = (error) => {
-        //   console.log(error)
-        //   vnode.context.$toast({
-        //     message: el.error.message + '播放出错，自动为您播放下一首'
-        //   })
-        //   setTimeout(() => {
-        //     vnode.context.nextSong()
-        //   }, 500)
-        // }
+        el.onerror = (error) => {
+          console.log(error)
+          if (this.playing) {
+            vnode.context.$toast({
+              message: el.error.message + '播放出错，自动为您播放下一首'
+            })
+            setTimeout(() => {
+              vnode.context.nextSong()
+            }, 500)
+          }
+        }
       },
       componentUpdated (el, bindings, vnode) {
         vnode.context.audioLoading = el.readyState !== 4 && bindings.value
+      }
+    },
+    computePx: {
+      inserted (el) {
+        let currentStyle = el.currentStyle ? el.currentStyle : document.defaultView.getComputedStyle(el, null)
+        el.style.width = el.style.height = parseFloat(currentStyle.width).toFixed() + 'px'
       }
     }
   },

@@ -37,7 +37,6 @@ $switchBorderColor: #49B6C3;
   * {
     pointer-events: none;
   }
-  display:flex;
   input{
     display: none;
     &:checked+span{

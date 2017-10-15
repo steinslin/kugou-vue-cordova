@@ -1,12 +1,10 @@
 # kugou-vue-cordova
 
-一个仿照酷狗的app,所使用的技术有：vuejs+vuex+vue-router+nodejs+cordova
+> 一个仿照酷狗的app,所使用的技术有：vuejs+vuex+vue-router+nodejs+cordova
 
 ### 使用方法
 
-修改yourpath/kugou/proxy.js  端口和ip
-
-修改yourpath/kugou/src/config/server.js  端口和ip
+> 修改yourpath/kugou/src/config/server.js  端口和ip
 
 ``` bash
 cd kugou

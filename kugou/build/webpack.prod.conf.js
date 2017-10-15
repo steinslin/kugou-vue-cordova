@@ -8,6 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var AppCachePlugin = require('appcache-webpack-plugin')
 
 var env = config.build.env
 
@@ -90,7 +91,15 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new AppCachePlugin({
+      // cache: ['entry.js'],
+      network: ['*'],  // No network access allowed!
+      // fallback: [''],
+      // settings: ['prefer-online'],
+      // exclude: [/.*\.js$/],  // Exclude file.txt and all .js files
+      output: 'cache.appcache'
+    })
   ]
 })
 

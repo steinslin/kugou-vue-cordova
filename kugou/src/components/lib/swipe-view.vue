@@ -73,6 +73,7 @@ export default{
       conWidth: 0,
       conContentWidth: 0,
       startTimeStamp: 0,
+      timeStamp: 0
     }
   },
   mounted () {
@@ -108,25 +109,47 @@ export default{
       this.startX = this.currentX = e.touches[0].pageX
       this.startY = this.currentY = e.touches[0].pageY
       this.swiping = true
-      this.startTimeStamp = e.timeStamp
+      this.startTimeStamp = this.timeStamp = e.timeStamp
     },
     swipeMove (e) {
       if (!this.swiping) {
         return
       }
-      let {startX, startY, navArray, swiping, startTimeStamp} = this
-      let currentX = e.touches[0].pageX
-      let currentY = e.touches[0].pageY
-      if (e.timeStamp - startTimeStamp < 200 && (!swiping || Math.abs(currentY - startY) > Math.abs(currentX - startX))) {
-        this.swiping = false
-        return
-      }
-      e.preventDefault()
-      e.stopPropagation()
-      this.currentX = e.touches[0].pageX
-      this.currentY = e.touches[0].pageY
-      this.navOffsetLeft = this.navOffsetLeftCopy + (startX - currentX) / navArray.length * RATE
-      this.conOffsetLeft = this.conOffsetLeftCopy + (currentX - startX) * RATE
+      // if (e.timeStamp - this.timeStamp < 16.7) {
+      //   console.log('小于16.7ms 不执行任务')
+      //   return
+      // }
+      requestAnimationFrame(() => {
+        console.log(e.timeStamp - this.timeStamp)
+        this.timeStamp = e.timeStamp
+        let {startX, startY, navArray, swiping, startTimeStamp} = this
+        let currentX = e.touches[0].pageX
+        let currentY = e.touches[0].pageY
+        if (e.timeStamp - startTimeStamp < 200 && (!swiping || Math.abs(currentY - startY) > Math.abs(currentX - startX))) {
+          this.swiping = false
+          return
+        }
+        e.preventDefault()
+        e.stopPropagation()
+        this.currentX = e.touches[0].pageX
+        this.currentY = e.touches[0].pageY
+        this.navOffsetLeft = this.navOffsetLeftCopy + (startX - currentX) / navArray.length * RATE
+        this.conOffsetLeft = this.conOffsetLeftCopy + (currentX - startX) * RATE
+      })
+      // this.timeStamp = e.timeStamp
+      // let {startX, startY, navArray, swiping, startTimeStamp} = this
+      // let currentX = e.touches[0].pageX
+      // let currentY = e.touches[0].pageY
+      // if (e.timeStamp - startTimeStamp < 200 && (!swiping || Math.abs(currentY - startY) > Math.abs(currentX - startX))) {
+      //   this.swiping = false
+      //   return
+      // }
+      // e.preventDefault()
+      // e.stopPropagation()
+      // this.currentX = e.touches[0].pageX
+      // this.currentY = e.touches[0].pageY
+      // this.navOffsetLeft = this.navOffsetLeftCopy + (startX - currentX) / navArray.length * RATE
+      // this.conOffsetLeft = this.conOffsetLeftCopy + (currentX - startX) * RATE
     },
     swipeEnd (e) {
       this.swiping = false

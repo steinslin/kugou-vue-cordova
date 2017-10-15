@@ -23,6 +23,7 @@
     methods: {
       openSideBar () {
         console.log(1)
+        console.log('???')
         this.$emit('update:sideBarLeft', 0)
       },
       closeSideBar () {
